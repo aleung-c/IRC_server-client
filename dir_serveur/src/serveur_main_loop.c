@@ -62,7 +62,7 @@ void				check_fd_sets(t_serveur *serv)
 	// modif sur la sock du serveur.
 	if (FD_ISSET(serv->serveur_sock, serv->read_fd_set))
 	{
-	//	new_client_connection(serv);
+		new_client_connection(serv);
 	}
 	//check_all_clients_communication(serv);
 	//manage_clients_input(serv);
