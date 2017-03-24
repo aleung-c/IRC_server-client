@@ -12,20 +12,10 @@
 
 #include "../includes/serveur.h"
 
-int				accept_connection(t_serveur *serv)
-{
-	int						c_sock;
-	struct sockaddr_in		c_sin;
-	socklen_t				c_sin_size;
-
-	c_sin_size = sizeof(c_sin);
-	if ((c_sock = accept(serv->serveur_sock,
-		(struct sockaddr *)&c_sin, &c_sin_size)) < 0)
-	{
-		ft_printfstr(KRED "accept() error.\n" KRESET, NULL);
-	}
-	return (c_sock);
-}
+/*
+**	Called in main loop when the serveur sock receive a modification
+**	-> meaning new client is connected, and its socket will be stocked.
+*/
 
 void			new_client_connection(t_serveur *serv)
 {
@@ -40,7 +30,25 @@ void			new_client_connection(t_serveur *serv)
 	ft_printfstr("sock_endpoint: ", NULL);
 	ft_putnbr(serv->sock_endpoint);
 	client = create_new_client(serv, c_sock);
-	ft_printfstr(KGRN "\nNew client connected, sock : ", NULL);
-	ft_putnbr(client->sock);
-	ft_putchar('\n');
+	ft_printfstr(KGRN "\nNew client connected, sock: %d\n", &(client->sock));
+}
+
+/*
+**	Small function to accept the connection detected on the
+**	serveur's sock. Protected in case of error.
+*/
+
+int				accept_connection(t_serveur *serv)
+{
+	int						c_sock;
+	struct sockaddr_in		c_sin;
+	socklen_t				c_sin_size;
+
+	c_sin_size = sizeof(c_sin);
+	if ((c_sock = accept(serv->serveur_sock,
+		(struct sockaddr *)&c_sin, &c_sin_size)) < 0)
+	{
+		ft_printfstr(KRED "accept() error.\n" KRESET, NULL);
+	}
+	return (c_sock);
 }

@@ -46,16 +46,14 @@ int		init_serveur_connection(t_serveur *serv)
 		return (init_error("bind()"));
 	if (listen(sock, LISTEN_MAX_CLIENTS) < 0)
 		return (init_error("listen()"));
-	ft_printfstr(KGRN "- Serveur connection init OK -\n" KRESET, NULL);
+	printf(KGRN "- Serveur connection init OK -\n" KRESET);
 	serv->serveur_sock = sock;
-
 	return (0);
 }
 
 int		init_error(char *error_source)
 {
-	ft_printfstr(KRED "[Serveur]:" KRESET, NULL);
-	ft_printfstr("Error in %s function call.\n", error_source);
+	perror(error_source);
 	return (-1);
 }
 
@@ -76,9 +74,6 @@ void	clear_serveur(t_serveur *serv)
 
 void	print_serveur_datas(t_serveur *serv)
 {
-	ft_printfstr(KGRN "\nServer datas:\n" KRESET, NULL);
-	ft_printfstr("port: ", NULL);
-	ft_putnbr(serv->port);
-	ft_putchar('\n');
-	ft_putchar('\n');
+	printf(KGRN "\nServer datas:\n" KRESET);
+	printf("port: %d\n\n", serv->port);
 }

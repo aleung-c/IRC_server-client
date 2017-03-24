@@ -29,7 +29,8 @@ void				serveur_main_loop(t_serveur *serv)
 			serv->write_fd_set, NULL, set_select_timeout(&t));
 		if (ret_select < 0)
 		{
-			ft_printfstr(KRED "[Serveur]: Select() error." KRESET, NULL);
+			ft_printfstr(KRED "[Serveur]: Select() error.\n" KRESET, NULL);
+			perror("select() errno");
 			exit (-1);
 		}
 		check_fd_sets(serv);
@@ -39,10 +40,19 @@ void				serveur_main_loop(t_serveur *serv)
 
 void				init_fd(t_serveur *serv)
 {
+	t_client	*client_i;
+
 	FD_ZERO(serv->read_fd_set);
 	FD_ZERO(serv->write_fd_set);
 	FD_SET(STDIN_FILENO, serv->read_fd_set);
 	FD_SET(serv->serveur_sock, serv->read_fd_set);
+	client_i = serv->client_handler.clients_list;
+	while (client_i)
+	{
+		FD_SET(client_i->sock, serv->read_fd_set);
+		FD_SET(client_i->sock, serv->write_fd_set);
+		client_i = client_i->next;
+	}
 }
 
 struct timeval		*set_select_timeout(struct timeval *t)
@@ -64,7 +74,8 @@ void				check_fd_sets(t_serveur *serv)
 	{
 		new_client_connection(serv);
 	}
-	//check_all_clients_communication(serv);
-	//manage_clients_input(serv);
+	check_sockets_io(serv);
+	process_clients_inputs(serv);
+	
 	return ;
 }

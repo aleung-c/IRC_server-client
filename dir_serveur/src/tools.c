@@ -16,18 +16,24 @@
 ** A very simple version of format printing taking only one char *.
 */
 
-void	ft_printfstr(char *format, char *msg)
+void	ft_printfstr(char *format, void *arg)
 {
 	int i;
 
 	i = 0;
-	while (format[i])
+	while (arg && format[i])
 	{
-		if (msg && format[i] == '%' && format[i + 1]
-			&& format[i +1] == 's')
+		if (arg && format[i] == '%' && format[i + 1])
 		{
 			write (1, format, i);
-			write(1, msg, ft_strlen(msg));
+			if (format[i + 1] == 's')
+			{
+				write(1, (char *)arg, ft_strlen(arg));
+			}
+			else if (format[i + 1] == 'd')
+			{
+				ft_putnbr(*(int *)arg);
+			}
 			write(1, format + i + 2, ft_strlen(format) - i - 2);
 			return ;
 		}
@@ -43,4 +49,28 @@ void	*s_malloc(size_t size)
 	if (!(ret = malloc(size)))
 		exit(-1);
 	return (ret);
+}
+
+void	print_reception(char *msg, t_client *client)
+{
+	char	*msg_cpy;
+
+	msg_cpy = ft_strdup(msg);
+	replace_nl(msg_cpy, ft_strlen(msg_cpy));
+	printf(KCYN "<<<< [client #%d, s #%d]: " KRESET,
+		client->id, client->sock);
+	printf("[%s]\n", msg_cpy);
+}
+
+void	replace_nl(char *str, int len)
+{
+	str[len] = '\0';
+	while (len > 0)
+	{
+		if (str[len] == '\n')
+		{
+			str[len] = '*';
+		}
+		len--;
+	}
 }

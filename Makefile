@@ -10,6 +10,9 @@ dir_serveur/src/tools.c \
 dir_serveur/src/serveur_init.c \
 dir_serveur/src/client_connection.c \
 dir_serveur/src/client_handling.c \
+dir_serveur/src/client_input_handling.c \
+dir_serveur/src/socket_input_output.c \
+dir_serveur/src/circular_buffer.c \
 dir_serveur/src/serveur_main_loop.c
 
 OBJ_SERVEUR = $(SRC_SERVEUR:.c=.o)

@@ -14,8 +14,9 @@
 # define SERVEUR_H
 
 # include "../../libft/libft.h"
-# include <stdio.h> //
+# include <stdio.h>
 # include <unistd.h>
+# include <errno.h>
 
 # include <stdlib.h>
 # include <sys/types.h>
@@ -51,20 +52,38 @@
 
 # define LISTEN_MAX_CLIENTS 10
 
-# define BUFFER_SIZE 4096
+# define BUFFER_SIZE 12
 # define MSG_SIZE 4096
 
-# define ENDLINE "\n"
+# define MSG_DELIM '\n'
 
 /*
-** ----- Client struct
+** ----- Channel
 */
 
 typedef struct				s_channel
 {
-	int						nb;
 	char					*name;
+
+	struct s_channel		*next;
 }							t_channel;
+
+/*
+** ----- Circular buffer
+*/
+
+typedef struct				s_circular_buffer
+{
+	int						is_waiting;
+	char					data[BUFFER_SIZE];
+	int						start;
+	int						end;
+	int						len;
+}							t_circular_buffer;
+
+/*
+** ----- Client struct
+*/
 
 typedef struct				s_client
 {
@@ -73,15 +92,18 @@ typedef struct				s_client
 	char					nickname[10];
 	int						current_chan;
 
-	struct s_client			*next;
+	t_channel				*channels_joined;
 
+	t_circular_buffer		recv_buffer;
+	t_circular_buffer		write_buffer;
+
+	struct s_client			*next;
 }							t_client;
 
 typedef struct				s_client_handler
 {
 	int						nb_clients;
 	t_client				*clients_list;
-
 }							t_client_handler;
 
 /*
@@ -99,6 +121,8 @@ typedef struct				s_serveur
 	fd_set					*read_fd_set;
 	fd_set					*write_fd_set;
 
+	t_channel				*channel_list;
+
 	t_client_handler		client_handler;
 }							t_serveur;
 
@@ -112,6 +136,7 @@ typedef struct				s_serveur
 
 int							main(int argc, char **argv);
 void						print_usage(char *arg);
+
 /*
 ** serveur_init.c
 */
@@ -145,17 +170,47 @@ void						new_client_connection(t_serveur *serv);
 t_client					*create_new_client(t_serveur *serv, int c_sock);
 void						set_new_client(t_serveur *serv, t_client *new_client);
 void						add_client_to_list(t_serveur *serv, t_client *new_client);
+void						client_disconnect(t_serveur *serv, t_client *client);
+void						remove_client_from_list(t_serveur *serv, t_client *client);
+
+/*
+** socket_input_output.c
+*/
+
+void						check_sockets_io(t_serveur *serv);
+int							read_client_socket(t_serveur *serv, t_client *client);
+void						write_client_socket(t_serveur *serv, t_client *client);
+
+/*
+** client_input_handling.c
+*/
+
+void						process_clients_inputs(t_serveur *serv);
+
+/*
+** circular_buffer.c
+*/
+
+void						write_into_buffer(t_circular_buffer *buffer, char *received, int len);
+int							get_buffer_space(t_circular_buffer *buffer);
+void						clear_circular_buffer(t_circular_buffer *buffer);
+char						*get_buffer_str(t_circular_buffer *buffer);
+char						*get_buffer_delimstr(t_circular_buffer *buffer, int delim_count);
+int							search_buffer_delim(t_circular_buffer *buffer);
+char						*get_buffer_cmd(t_circular_buffer *buffer);
 
 /*
 ** tools.c
 */
 
 // int							ft_strlen(char *str);
-void						ft_printfstr(char *format, char *msg);
+void						ft_printfstr(char *format, void *arg);
 // int							ft_atoi(const char *str);
 // int							ft_isdigit(int c);
 // void							ft_putchar(char c);
 // void							ft_putnbr(int n);
 void						*s_malloc(size_t size);
+void						print_reception(char *msg, t_client *client);
+void						replace_nl(char *str, int len);
 
 #endif
