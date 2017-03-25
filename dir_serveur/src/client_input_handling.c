@@ -20,19 +20,25 @@
 void	process_clients_inputs(t_serveur *serv)
 {
 	t_client	*client_i;
-	char		*cmd;
+	char		*msg;
 
 	client_i = serv->client_handler.clients_list;
 	while (client_i)
 	{
-		if ((cmd = get_buffer_cmd(&client_i->recv_buffer)))
+		if ((msg = get_buffer_msg(&client_i->recv_buffer)))
 		{
-			// parse cmd
-			printf("Extracted cmd: [%s]\n", cmd);
+			// parse msg
+			printf("Extracted msg: [%s]\n", msg);
+			// printf("buffer len: %d\nbuffer start: %d\nbuffer end: %d\n",
+			// 	client_i->recv_buffer.len,
+			// 	client_i->recv_buffer.start,
+			// 	client_i->recv_buffer.end);
+			parse_client_msg(serv, client_i, msg);
+			free(msg);
 		}
 		else if (client_i->recv_buffer.is_waiting == 1)
 		{
-			printf(KYEL "[Client #%d sock %d]: sent msg too long -> clearing buff\n" KRESET,
+			printf(KYEL "[Client #%d sock %d]: sent msg too long -> cutting msg\n" KRESET,
 				client_i->id, client_i->sock);
 				client_i->recv_buffer.is_waiting = 0;
 			clear_circular_buffer(&client_i->recv_buffer);
@@ -42,4 +48,20 @@ void	process_clients_inputs(t_serveur *serv)
 }
 
 
+// NOT WORKING - to reread...
+void	parse_client_msg(t_serveur *serv, t_client *client, char *msg)
+{
+	int			i;
 
+	(void)serv;
+	i = 0;
+	while (msg[i] && (msg[i] == ' ' || msg[i] == '\t'))
+		i++;
+	if (msg[i]|| msg[i] != '/')
+	{
+		printf(KMAG "[Server]: Not a command! - [client #%d sock %d]: %s\n" KRESET,
+			client->id, client->sock, msg);
+		send_msg(client, "[Server]: ERROR - This is not a valid command :");
+		send_msg(client, msg);
+	}
+}

@@ -21,6 +21,7 @@ int		init_serveur(t_serveur *serv)
 	if (init_serveur_connection(serv) == 0)
 	{
 		clear_serveur(serv);
+		init_cmd_list(serv);
 		print_serveur_datas(serv);
 		return (0);
 	}

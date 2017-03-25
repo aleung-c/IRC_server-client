@@ -12,16 +12,22 @@
 
 #include "../includes/serveur.h"
 
-void	write_into_buffer(t_circular_buffer *buffer, char *received, int len)
+/*
+**	Write into the circular buffer. May be used for reading and for sending.
+**	Warning: does not check for end of buffer! You may erase current
+**	datas with this.
+*/
+
+void	write_into_buffer(t_circular_buffer *buffer, char *str, int len)
 {
 	int i;
 	int write_pos;
 
 	i = 0;
-	while (len && received[i])
+	while (len && str[i])
 	{
 		write_pos = (buffer->start + buffer->len + i) % BUFFER_SIZE;
-		buffer->data[write_pos] = received[i];
+		buffer->data[write_pos] = str[i];
 		i++;
 		len--;
 	}
@@ -57,6 +63,11 @@ void	clear_circular_buffer(t_circular_buffer *buffer)
 	buffer->len = 0;
 }
 
+/*
+**	This function takes the current string from the buffer.
+**	Does not modify the buffer. Useful for read only operations.
+*/
+
 char	*get_buffer_str(t_circular_buffer *buffer)
 {
 	char	*str;
@@ -71,63 +82,4 @@ char	*get_buffer_str(t_circular_buffer *buffer)
 		i++;
 	}
 	return (str);
-}
-
-/*
-**	Extract the string from the buffer until the delimiter.
-**	Moves the buffer start and len.
-*/
-
-char	*get_buffer_delimstr(t_circular_buffer *buffer, int delim_count)
-{
-	char	*str;
-	int 	i;
-
-	i = 0;
-	str = (char *)s_malloc(delim_count * sizeof(char) + 1);
-	str[delim_count] = '\0';
-	while (i < delim_count)		
-	{
-		str[i] = buffer->data[(buffer->start + i) % BUFFER_SIZE];
-		i++;
-	}
-	buffer->start = (buffer->start + i) % BUFFER_SIZE;
-	buffer->len -= i;
-	return (str);
-}
-
-int		search_buffer_delim(t_circular_buffer *buffer)
-{
-	int i;
-
-	i = 0;
-	while (i != buffer->len)		
-	{
-		if (buffer->data[(buffer->start + i) % BUFFER_SIZE] == MSG_DELIM)
-			return (i);
-		i++;
-	}
-	return (0);
-}
-
-/*
-**	For a given buffer, will check if the message delimiter is present.
-**	If yes, we will extract this message and make the buffer advance.
-**	If not, return NULL;
-*/
-
-char	*get_buffer_cmd(t_circular_buffer *buffer)
-{
-	char	*cmd;
-	int		i;
-
-	if ((i = search_buffer_delim(buffer)))
-	{
-		cmd = get_buffer_delimstr(buffer, i);
-		return (cmd);
-	}
-	else
-	{
-		return (NULL);
-	}
 }

@@ -36,7 +36,7 @@ t_client	*create_new_client(t_serveur *serv, int c_sock)
 void	set_new_client(t_serveur *serv, t_client *new_client)
 {
 	new_client->id = serv->client_handler.nb_clients;
-	ft_memset(new_client->nickname, 0, 10);
+	ft_memcpy(new_client->nickname, "aleung-c\0", 9);
 	new_client->channels_joined = NULL;
 	clear_circular_buffer(&new_client->recv_buffer);
 	clear_circular_buffer(&new_client->write_buffer);

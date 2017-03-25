@@ -57,9 +57,20 @@ void	print_reception(char *msg, t_client *client)
 
 	msg_cpy = ft_strdup(msg);
 	replace_nl(msg_cpy, ft_strlen(msg_cpy));
-	printf(KCYN "<<<< [client #%d, s #%d]: " KRESET,
+	printf(KCYN "<<<<< [client #%d, sock %d]: " KRESET,
 		client->id, client->sock);
 	printf("[%s]\n", msg_cpy);
+}
+
+void	print_sending(char *msg, t_client *client, int len)
+{
+	char	*msg_cpy;
+
+	msg_cpy = ft_strdup(msg);
+	replace_nl(msg_cpy, ft_strlen(msg_cpy));
+	printf(KYEL ">>>>> [client #%d, sock %d]: " KRESET,
+		client->id, client->sock);
+	printf("[%.*s]\n", len, msg_cpy);
 }
 
 void	replace_nl(char *str, int len)

@@ -85,7 +85,22 @@ int		read_client_socket(t_serveur *serv, t_client *client)
 
 void	write_client_socket(t_serveur *serv, t_client *client)
 {
+	static char		send_buffer[MSG_SIZE + 1];
+	int				to_send;
+	int				ret;
+
 	(void)serv;
 	(void)client;
-
+	if (client->write_buffer.len > 0)
+	{
+		// there are datas to be sent.
+		to_send = extract_datas_to_send(&client->write_buffer, send_buffer);
+		ret = send(client->sock, send_buffer, to_send, 0);
+		print_sending(send_buffer, client, to_send);
+		if (ret == -1)
+		{
+			perror("send()");
+			exit (-1);
+		}
+	}
 }
