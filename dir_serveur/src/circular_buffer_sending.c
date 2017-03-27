@@ -32,7 +32,6 @@ void	send_msg(t_client *client, char *msg)
 /*
 **	Put the datas from the buffer into the static tmp buffer for sending.
 */
-
 int		extract_datas_to_send(t_circular_buffer *buffer, char *send_buffer)
 {
 	int		i;
@@ -46,9 +45,8 @@ int		extract_datas_to_send(t_circular_buffer *buffer, char *send_buffer)
 		i++;
 		buffer->len--;
 	}
-	send_buffer[i] = '\n';
-	buffer->start = write_pos;
-	return (i + 1);
+	buffer->start = write_pos + 1;
+	return (i);
 	// DEBUG PRINT
 	// char *buff_cpy = ft_strdup(buffer->data);
 	// replace_nl(buff_cpy, ft_strlen(buff_cpy));

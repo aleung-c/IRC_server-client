@@ -71,6 +71,7 @@ void	clear_serveur(t_serveur *serv)
 	serv->write_fd_set = (fd_set *)s_malloc((sizeof(fd_set)));
 	serv->client_handler.nb_clients = 0;
 	serv->client_handler.clients_list = NULL;
+	serv->channel_list = NULL;
 }
 
 void	print_serveur_datas(t_serveur *serv)

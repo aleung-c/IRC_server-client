@@ -66,16 +66,14 @@ void				check_fd_sets(t_serveur *serv)
 {
 	if (FD_ISSET(STDIN_FILENO, serv->read_fd_set))
 	{
-		ft_printfstr(KGRN "[Serveur]: Closing server." KRESET, NULL);
+		ft_printfstr(KGRN "[Serveur]: Closing server.\n" KRESET, NULL);
 		exit(0);
 	}
-	// modif sur la sock du serveur.
 	if (FD_ISSET(serv->serveur_sock, serv->read_fd_set))
 	{
 		new_client_connection(serv);
 	}
 	check_sockets_io(serv);
 	process_clients_inputs(serv);
-	
 	return ;
 }

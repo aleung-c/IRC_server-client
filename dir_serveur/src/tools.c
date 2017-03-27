@@ -85,3 +85,22 @@ void	replace_nl(char *str, int len)
 		len--;
 	}
 }
+
+/*
+**	Get length until first delimiter c. Does not check boundaries!!
+**	Best used after most size checks.
+*/
+
+int		get_len_to_delim(char *msg, char c)
+{
+	int i;
+
+	i = 0;
+	while (msg[i] && msg[i] != c)
+	{
+		if (msg[i] == c)
+			return (i);
+		i++;
+	}
+	return (i);
+}

@@ -53,16 +53,30 @@
 # define LISTEN_MAX_CLIENTS 10
 
 # define BUFFER_SIZE 4096
-# define MSG_SIZE 1024
+# define MSG_SIZE 512 // default 512
 
 # define MSG_DELIM '\n'
 
+# define PROTOCOL_MAX_MSG_SIZE 10
+# define CMD_MAX_LEN 10
+# define PRIV_MSG_DEST_MAX_LEN 9
+# define TEXT_MSG_MAX_LEN 482 // 512 - 10 - 10 - 10
 
 /*
 **	Server parsing defines
 */
 
-# define NB_OF_CMDS 5
+# define NB_OF_CMDS 9
+
+
+/*
+**	Server irc define
+*/
+
+# define MAX_NICK_LEN 9
+# define MAX_CHANNEL_NAME_LEN 50
+# define MAX_JOINABLE_CHAN 5
+
 
 /*
 **	Server structs.
@@ -141,12 +155,33 @@ void						write_client_socket(t_serveur *serv,
 								t_client *client);
 
 /*
-** client_input_handling.c
+** ---- Entry point to client process - client_input_handling.c
 */
 
 void						process_clients_inputs(t_serveur *serv);
-void						parse_client_msg(t_serveur *serv, t_client *client,
-								char *msg);
+
+/*
+** client_input_protocol_parsing.c
+*/
+
+void						parse_client_protocol_msg(t_serveur *serv,
+								t_client *client, char *msg);
+int							get_protocol_msg_end_pos(char *msg);
+
+/*
+** client_input_msg_parsing.c
+*/
+
+void						parse_client_user_msg(t_serveur *serv,
+								t_client *client, char *msg, int msg_start);
+
+/*
+** client_input_cmd_parsing.c
+*/
+
+void						parse_client_chat_cmd(t_serveur *serv,
+								t_client *client, char *msg, int msg_start);
+
 /*
 ** circular_buffer.c
 */
@@ -168,8 +203,18 @@ void						send_msg(t_client *client, char *msg);
 **	Chat commands
 */
 
-void						cmd_nick(t_serveur *serv, t_client *client,
-								char *msg);
+void						cmd_nick(t_serveur *serv,
+								t_client *client, char *msg,
+								int user_msg_start);
+void						cmd_join(t_serveur *serv, t_client *client,
+								char *msg, int user_msg_start);
+/*
+**	Channel Handling
+*/
+
+t_channel					*get_channel(t_serveur *serv, char *chan_name);
+t_channel					*create_new_chan(t_serveur *serv, char *chan_name);
+void						add_client_to_chan(t_channel *chan, t_client *client);
 
 /*
 ** tools.c
@@ -180,5 +225,11 @@ void						*s_malloc(size_t size);
 void						print_reception(char *msg, t_client *client);
 void						print_sending(char *msg, t_client *client, int len);
 void						replace_nl(char *str, int len);
+int							get_len_to_delim(char *msg, char c);
 
+char						**string_lexer(char *msg, char delim);
+int							str_word_count(char *msg, char delim);
+void						fill_array(char **array, char *msg, char delim);
+int							get_array_count(char **array);
+void						turn_tabs_to_space(char *str);
 #endif

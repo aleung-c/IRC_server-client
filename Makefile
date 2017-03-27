@@ -7,15 +7,22 @@ HEADER_SERVEUR = dir_serveur/includes/serveur.h
 SRC_SERVEUR = \
 dir_serveur/src/serveur_main.c \
 dir_serveur/src/tools.c \
+dir_serveur/src/tools_parsing.c \
 dir_serveur/src/serveur_init.c \
 dir_serveur/src/serveur_init_cmds.c \
 dir_serveur/src/client_connection.c \
 dir_serveur/src/client_handling.c \
 dir_serveur/src/client_input_handling.c \
+dir_serveur/src/client_input_protocol_parsing.c \
+dir_serveur/src/client_input_msg_parsing.c \
+dir_serveur/src/client_input_cmd_parsing.c \
 dir_serveur/src/socket_input_output.c \
 dir_serveur/src/circular_buffer.c \
 dir_serveur/src/circular_buffer_extraction.c \
 dir_serveur/src/circular_buffer_sending.c \
+dir_serveur/src/channels_handling.c \
+dir_serveur/src/cmds_functions/cmd_nick.c \
+dir_serveur/src/cmds_functions/cmd_join.c \
 dir_serveur/src/serveur_main_loop.c
 
 OBJ_SERVEUR = $(SRC_SERVEUR:.c=.o)

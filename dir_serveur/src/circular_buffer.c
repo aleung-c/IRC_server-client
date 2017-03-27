@@ -35,9 +35,9 @@ void	write_into_buffer(t_circular_buffer *buffer, char *str, int len)
 	buffer->end = write_pos;
 
 	// DEBUG PRINT
-	char *buff_cpy = ft_strdup(buffer->data);
-	replace_nl(buff_cpy, ft_strlen(buff_cpy));
-	printf("in buff: [%.*s]\n", BUFFER_SIZE, buff_cpy);
+	// char *buff_cpy = ft_strdup(buffer->data);
+	// replace_nl(buff_cpy, ft_strlen(buff_cpy));
+	// printf("in buff: [%.*s]\n", BUFFER_SIZE, buff_cpy);
 }
 
 /*

@@ -42,6 +42,10 @@ void	check_sockets_io(t_serveur *serv)
 			// serveur may send datas to client.
 			write_client_socket(serv, client_i);
 		}
+		// no msg waiting to be sent, disconnect him.
+		if (client_i->write_buffer.len == 0
+			&& client_i->to_be_disconnected == 1)
+			client_disconnect(serv, client_i);
 		if (client_i)
 			client_i = client_i->next;
 	}

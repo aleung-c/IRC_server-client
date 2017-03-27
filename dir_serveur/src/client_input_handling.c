@@ -14,7 +14,8 @@
 
 /*
 **	For each client, we will check the content of their recv_buffer
-**	and check what they have sent. Soon it will be time to parse!
+**	and check what they have sent.
+**	We start by checking if they respect protocol, then we parse their input.
 */
 
 void	process_clients_inputs(t_serveur *serv)
@@ -33,7 +34,7 @@ void	process_clients_inputs(t_serveur *serv)
 			// 	client_i->recv_buffer.len,
 			// 	client_i->recv_buffer.start,
 			// 	client_i->recv_buffer.end);
-			parse_client_msg(serv, client_i, msg);
+			parse_client_protocol_msg(serv, client_i, msg);
 			free(msg);
 		}
 		else if (client_i->recv_buffer.is_waiting == 1)
@@ -44,24 +45,5 @@ void	process_clients_inputs(t_serveur *serv)
 			clear_circular_buffer(&client_i->recv_buffer);
 		}
 		client_i = client_i->next;
-	}
-}
-
-
-// NOT WORKING - to reread...
-void	parse_client_msg(t_serveur *serv, t_client *client, char *msg)
-{
-	int			i;
-
-	(void)serv;
-	i = 0;
-	while (msg[i] && (msg[i] == ' ' || msg[i] == '\t'))
-		i++;
-	if (msg[i]|| msg[i] != '/')
-	{
-		printf(KMAG "[Server]: Not a command! - [client #%d sock %d]: %s\n" KRESET,
-			client->id, client->sock, msg);
-		send_msg(client, "[Server]: ERROR - This is not a valid command :");
-		send_msg(client, msg);
 	}
 }
