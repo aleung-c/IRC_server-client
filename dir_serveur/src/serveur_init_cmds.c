@@ -24,7 +24,7 @@ void	init_cmd_list(t_serveur *serv)
 	serv->chat_cmd_table[1].name = "/join";
 	serv->chat_cmd_table[1].function = &cmd_join;
 	serv->chat_cmd_table[2].name = "/leave";
-	serv->chat_cmd_table[2].function = NULL;
+	serv->chat_cmd_table[2].function = &cmd_leave;
 	serv->chat_cmd_table[3].name = "/list";
 	serv->chat_cmd_table[3].function = NULL;
 	serv->chat_cmd_table[4].name = "/who";

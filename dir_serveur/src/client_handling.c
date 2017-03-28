@@ -38,6 +38,7 @@ void	set_new_client(t_serveur *serv, t_client *new_client)
 	new_client->id = serv->client_handler.nb_clients;
 	ft_memcpy(new_client->nickname, "aleung-c\0", 9);
 	new_client->current_channel = NULL;
+	new_client->channels_joined = NULL;
 	new_client->nb_chan_joined = 0;
 	new_client->to_be_disconnected = 0;
 	clear_circular_buffer(&new_client->recv_buffer);

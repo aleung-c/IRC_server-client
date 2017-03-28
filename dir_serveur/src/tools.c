@@ -53,13 +53,29 @@ void	*s_malloc(size_t size)
 
 void	print_reception(char *msg, t_client *client)
 {
-	char	*msg_cpy;
+	// char	*msg_cpy;
 
-	msg_cpy = ft_strdup(msg);
-	replace_nl(msg_cpy, ft_strlen(msg_cpy));
-	printf(KCYN "<<<<< [client #%d, sock %d]: " KRESET,
-		client->id, client->sock);
-	printf("[%s]\n", msg_cpy);
+	// msg_cpy = ft_strdup(msg);
+	// replace_nl(msg_cpy, ft_strlen(msg_cpy));
+	// printf(KCYN "<<<<< [client #%d, sock %d]:%s [%s]\n",
+	// 	client->id, client->sock, KRESET, msg_cpy);
+	// free(msg_cpy);
+	int i;
+
+	i = 0;
+	printf(KCYN "<<<<< [client #%d, sock %d]:%s\n",
+		client->id, client->sock, KRESET);
+	write(1, "\t[", 2);
+	while (msg[i] && msg[i] != MSG_DELIM)
+	{
+		i++;
+	}
+	write(1, msg, i);
+	if (msg[i] == '\n')
+		write(1, "*]\n", 3);
+	else
+		write(1, "]\n", 2);
+	return ;
 }
 
 void	print_sending(char *msg, t_client *client, int len)
@@ -68,9 +84,9 @@ void	print_sending(char *msg, t_client *client, int len)
 
 	msg_cpy = ft_strdup(msg);
 	replace_nl(msg_cpy, ft_strlen(msg_cpy));
-	printf(KYEL ">>>>> [client #%d, sock %d]: " KRESET,
-		client->id, client->sock);
-	printf("[%.*s]\n", len, msg_cpy);
+	printf(KYEL ">>>>> [client #%d, sock %d]: %s [%.*s]\n",
+		client->id, client->sock, KRESET, len, msg_cpy);
+	free(msg_cpy);
 }
 
 void	replace_nl(char *str, int len)

@@ -69,8 +69,8 @@ int		read_client_socket(t_serveur *serv, t_client *client)
 	{
 		ret = recv(client->sock, recv_buffer, buff_free_space, 0);
 		recv_buffer[ret] = '\0';
-		print_reception(recv_buffer, client);
 		write_into_buffer(&client->recv_buffer, recv_buffer, ft_strlen(recv_buffer));
+		print_reception(recv_buffer, client);
 		return (ret);
 	}
 	else if (client->recv_buffer.is_waiting == 0)

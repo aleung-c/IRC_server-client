@@ -49,8 +49,8 @@ char	*get_buffer_delimstr(t_circular_buffer *buffer, int delim_count)
 	int 	i;
 
 	i = 0;
-	str = (char *)s_malloc(delim_count * sizeof(char) + 1);
-	str[delim_count + 1] = '\0';
+	str = (char *)s_malloc(delim_count * sizeof(char));
+	str[delim_count] = '\0';
 	while (i < delim_count)
 	{
 		str[i] = buffer->data[(buffer->start + i) % BUFFER_SIZE];
@@ -101,7 +101,7 @@ char	*get_buffer_msg(t_circular_buffer *buffer)
 	char	*msg;
 	int		i;
 
-	if ((i = search_buffer_delim(buffer)))
+	if ((i = search_buffer_delim(buffer)) != 0)
 	{
 		msg = get_buffer_delimstr(buffer, i);
 		return (msg);

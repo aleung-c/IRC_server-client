@@ -25,11 +25,11 @@ char	**string_lexer(char *msg, char delim)
 		exit(-1);
 	ret[nb_words] = NULL;
 	fill_array(ret, msg, delim);
-	// while (ret[i])
-	// {
-	// 	printf("[%s]\n", ret[i]);
-	// 	i++;
-	// }
+	while (ret[i])
+	{
+		printf("[%s]\n", ret[i]);
+		i++;
+	}
 	return (ret);
 }
 
@@ -48,9 +48,9 @@ int		str_word_count(char *msg, char delim)
 			while (msg[i] && msg[i] != delim)
 				i++;
 		}
-		if (msg[i] && msg[i] == delim)
+		if (msg[i] && (msg[i] == delim))
 		{
-			while (msg[i] && msg[i] == delim)
+			while (msg[i] && (msg[i] == delim))
 				i++;
 		}
 	}
@@ -76,12 +76,13 @@ void	fill_array(char **array, char *msg, char delim)
 			if (!(array[array_count] = (char *)malloc(sizeof(char) * y)))
 				exit(-1);
 			ft_memcpy(array[array_count], msg + i, y);
+			array[array_count][y] = '\0';
 			array_count++;
 			i += y;
 		}
-		if (msg[i] && msg[i] == delim)
+		if (msg[i] && (msg[i] == delim))
 		{
-			while (msg[i] && msg[i] == delim)
+			while (msg[i] && (msg[i] == delim))
 				i++;
 		}
 	}
@@ -110,4 +111,36 @@ void	turn_tabs_to_space(char *str)
 		}
 		i++;
 	}
+}
+
+/*
+**	Turn the last nl char to zero in a string.
+*/
+
+void	turn_nl_to_zero(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\n')
+		{
+			str[i] = '\0';
+		}
+		i++;
+	}
+}
+
+void	free_lexed_array(char **array)
+{
+	int i;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
 }

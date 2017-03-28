@@ -31,10 +31,19 @@ typedef struct				s_client_list
 typedef struct				s_channel
 {
 	char					name[MAX_CHANNEL_NAME_LEN];
+	int						nb_clients;
 	t_client_list			*connected_clients;
-
-	struct s_channel		*next;
 }							t_channel;
+
+/*
+** ----- Used to list channel on serv or on clients.
+*/
+
+typedef struct				s_channel_list
+{
+	t_channel				*chan_ptr;
+	struct s_channel_list	*next;
+}							t_channel_list;
 
 /*
 ** ----- Circular buffer
@@ -60,7 +69,7 @@ typedef struct				s_client
 	char					nickname[MAX_NICK_LEN + 1];
 
 	t_channel				*current_channel;
-	t_channel				*channels_joined[MAX_JOINABLE_CHAN];
+	t_channel_list			*channels_joined;
 	int						nb_chan_joined;
 
 	t_circular_buffer		recv_buffer;
@@ -76,6 +85,10 @@ typedef struct				s_client_handler
 	int						nb_clients;
 	t_client				*clients_list;
 }							t_client_handler;
+
+
+
+
 
 /*
 ** ----- commands

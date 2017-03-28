@@ -17,65 +17,66 @@
 **	or NULL otherwise, searching by the name of the channel.
 */
 
-t_channel		*get_channel(t_serveur *serv, char *chan_name)
+t_channel		*get_chan_from_list(t_channel_list *list, char *chan_name)
 {
-	t_channel	*tmp;
+	t_channel_list	*tmp;
 
-	tmp = serv->channel_list;
+	tmp = list;
 	while (tmp)
 	{
-		if (ft_strncmp(chan_name, tmp->name, ft_strlen(tmp->name)) == 0
-			&& ft_strlen(chan_name) == ft_strlen(tmp->name))
+		printf("check : [%s] == [%s]\n", chan_name, tmp->chan_ptr->name);
+		if (ft_strncmp(chan_name, tmp->chan_ptr->name,
+			ft_strlen(tmp->chan_ptr->name)) == 0
+			&& ft_strlen(chan_name) == ft_strlen(tmp->chan_ptr->name))
 		{
-			return (tmp);
+			return (tmp->chan_ptr);
 		}
 		tmp = tmp->next;
 	}
 	return (NULL);
 }
 
-t_channel	*create_new_chan(t_serveur *serv, char *chan_name)
+/*
+**	create a new channel and adds it to the server's channel list.
+*/
+
+t_channel		*create_new_chan(t_serveur *serv, char *chan_name)
 {
 	t_channel	*new_chan;
-	t_channel	*tmp;
 
 	new_chan = (t_channel *)malloc(sizeof(t_channel));
 	ft_memcpy(new_chan->name, chan_name, ft_strlen(chan_name));
 	new_chan->name[ft_strlen(chan_name)] = '\0';
 	new_chan->connected_clients = NULL;
-	new_chan->next = NULL;
-	if (!serv->channel_list)
-	{
-		serv->channel_list = new_chan;
-	}
-	else
-	{
-		tmp = serv->channel_list;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new_chan;
-	}
+	new_chan->nb_clients = 0;
+	add_chan_to_list(&serv->channel_list, new_chan);
+	printf(KCYN "[Server]: Created new channel [%s]\n" KRESET,
+		new_chan->name);
 	return (new_chan);
 }
 
-void	add_client_to_chan(t_channel *chan, t_client *client)
-{
-	t_client_list	*client_node;
-	t_client_list	*tmp;
+/*
+**	When channel is taken down, free list of clients.
+*/
 
-	client_node = (t_client_list *)malloc(sizeof(t_client_list));
-	client_node->client_ptr = client;
-	client_node->next = NULL;
-	if (!chan->connected_clients)
+void			clear_channel_clients(t_channel *chan)
+{
+	t_client_list	*tmp;
+	t_client_list	*tmp2;
+
+	if (chan->nb_clients == 1)
 	{
-		chan->connected_clients = client_node;
-		return ;
+		free(chan->connected_clients);
 	}
-	else
-	{
+	else if (chan->nb_clients > 1)
+	{ 
 		tmp = chan->connected_clients;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = client_node;
+		tmp2 = tmp->next;
+		while (tmp2->next)
+		{
+			free(tmp);
+			tmp2 = tmp2->next;
+		}
+		free(tmp2);
 	}
 }

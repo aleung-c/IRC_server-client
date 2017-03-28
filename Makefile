@@ -21,8 +21,10 @@ dir_serveur/src/circular_buffer.c \
 dir_serveur/src/circular_buffer_extraction.c \
 dir_serveur/src/circular_buffer_sending.c \
 dir_serveur/src/channels_handling.c \
+dir_serveur/src/channels_list_handling.c \
 dir_serveur/src/cmds_functions/cmd_nick.c \
 dir_serveur/src/cmds_functions/cmd_join.c \
+dir_serveur/src/cmds_functions/cmd_leave.c \
 dir_serveur/src/serveur_main_loop.c
 
 OBJ_SERVEUR = $(SRC_SERVEUR:.c=.o)

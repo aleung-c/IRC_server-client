@@ -67,7 +67,6 @@ int		get_protocol_msg_end_pos(char *msg)
 	i = 0;
 	if (!msg[i] || msg[i] != '$')
 	{
-		printf("Here!\n");
 		return (-1);
 	}
 	while (msg[i] && i < PROTOCOL_MAX_MSG_SIZE)
@@ -76,6 +75,5 @@ int		get_protocol_msg_end_pos(char *msg)
 			return (i + 1);
 		i++;
 	}
-	printf("Here 2!\n");
 	return (-1);
 }

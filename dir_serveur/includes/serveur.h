@@ -208,13 +208,30 @@ void						cmd_nick(t_serveur *serv,
 								int user_msg_start);
 void						cmd_join(t_serveur *serv, t_client *client,
 								char *msg, int user_msg_start);
+int							cmd_join_parse_args(char **lexed_msg, t_client *client,
+								char *msg, int user_msg_start);
+void						cmd_leave(t_serveur *serv, t_client *client,
+								char *msg, int user_msg_start);
+int							cmd_leave_parse_arg(char **lexed_msg, t_client *client, char *msg,
+								int user_msg_start);
+
 /*
 **	Channel Handling
 */
 
-t_channel					*get_channel(t_serveur *serv, char *chan_name);
+t_channel					*get_chan_from_list(t_channel_list *list, char *chan_name);
 t_channel					*create_new_chan(t_serveur *serv, char *chan_name);
-void						add_client_to_chan(t_channel *chan, t_client *client);
+
+/*
+**	Channel list Handling
+*/
+
+t_channel_list				*add_chan_to_list(t_channel_list **chan_list,
+								t_channel *new_chan);
+void						remove_chan_from_list(t_channel_list **chan_list,
+								t_channel *chan);
+void						add_client_to_chan(t_channel *chan,
+								t_client *client);
 
 /*
 ** tools.c
@@ -232,4 +249,7 @@ int							str_word_count(char *msg, char delim);
 void						fill_array(char **array, char *msg, char delim);
 int							get_array_count(char **array);
 void						turn_tabs_to_space(char *str);
+void						turn_nl_to_zero(char *str);
+void						free_lexed_array(char **array);
+
 #endif

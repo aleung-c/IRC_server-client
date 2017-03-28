@@ -30,7 +30,7 @@ typedef struct				s_serveur
 	fd_set					*read_fd_set;
 	fd_set					*write_fd_set;
 
-	t_channel				*channel_list;
+	t_channel_list			*channel_list;
 	t_chat_cmd				*chat_cmd_table;
 
 	t_client_handler		client_handler;

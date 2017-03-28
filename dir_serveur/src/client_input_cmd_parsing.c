@@ -33,17 +33,17 @@ void	parse_client_chat_cmd(t_serveur *serv, t_client *client, char *msg,
 			CMD_MAX_LEN, msg + msg_start);
 		return ;
 	}
-	printf("cmd len = %d\n", (int)cmd_len);
+	//printf("cmd len = %d\n", (int)cmd_len);
 	i = 0;
 	chat_cmd = serv->chat_cmd_table;
 	while (i < NB_OF_CMDS)
 	{
-		printf("chat cmd len = %d\n", (int)ft_strlen(chat_cmd[i].name));
+		//printf("chat cmd len = %d\n", (int)ft_strlen(chat_cmd[i].name));
 		if (ft_strncmp(msg + msg_start, chat_cmd[i].name,
 			ft_strlen(chat_cmd[i].name) - 1) == 0
 			&& cmd_len == ft_strlen(chat_cmd[i].name))
 		{
-			printf(KGRN "Found chat command to execute!\n" KRESET);
+			printf(KGRN "[Server]: Found chat command to execute!\n" KRESET);
 			chat_cmd[i].function(serv, client, msg, msg_start);
 			return ;
 		}
