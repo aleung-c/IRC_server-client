@@ -49,7 +49,7 @@ char	*get_buffer_delimstr(t_circular_buffer *buffer, int delim_count)
 	int 	i;
 
 	i = 0;
-	str = (char *)s_malloc(delim_count * sizeof(char));
+	str = (char *)s_malloc(delim_count * sizeof(char) + 1);
 	str[delim_count] = '\0';
 	while (i < delim_count)
 	{

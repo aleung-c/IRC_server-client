@@ -75,6 +75,8 @@ typedef struct				s_client
 	t_circular_buffer		recv_buffer;
 	t_circular_buffer		write_buffer;
 
+	int 					has_nick;
+	int						is_authentified;
 	int						to_be_disconnected;
 
 	struct s_client			*next;
@@ -85,10 +87,6 @@ typedef struct				s_client_handler
 	int						nb_clients;
 	t_client				*clients_list;
 }							t_client_handler;
-
-
-
-
 
 /*
 ** ----- commands

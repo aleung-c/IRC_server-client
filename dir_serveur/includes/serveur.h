@@ -60,7 +60,7 @@
 # define PROTOCOL_MAX_MSG_SIZE 10
 # define CMD_MAX_LEN 10
 # define PRIV_MSG_DEST_MAX_LEN 9
-# define TEXT_MSG_MAX_LEN 482 // 512 - 10 - 10 - 10
+# define TEXT_MSG_MAX_LEN 400 // 512 - 10 - 10 - 10 ....
 
 /*
 **	Server parsing defines
@@ -128,7 +128,8 @@ void						check_fd_sets(t_serveur *serv);
 
 int							accept_connection(t_serveur *serv);
 void						new_client_connection(t_serveur *serv);
-void						new_client_welcome(t_client *client);
+void						new_client_auth_request(t_client *client);
+void						new_client_auth_welcome(t_client *client);
 
 /*
 ** client_handling.c
@@ -141,8 +142,10 @@ void						add_client_to_list(t_serveur *serv,
 								t_client *new_client);
 void						client_disconnect(t_serveur *serv,
 								t_client *client);
+void						clear_client_variables(t_client *client);
 void						remove_client_from_list(t_serveur *serv,
 								t_client *client);
+t_client					*get_client_by_nick(t_serveur *serv, char *nick);
 
 /*
 ** socket_input_output.c
@@ -168,12 +171,38 @@ void						parse_client_protocol_msg(t_serveur *serv,
 								t_client *client, char *msg);
 int							get_protocol_msg_end_pos(char *msg);
 
+void						protocol_auth_errmsg(t_client *client);
+
+/*
+** protocol requests.
+*/
+
+void						protocol_request_nick(t_serveur *serv,
+								t_client *client, char *msg,
+								int proto_msg_delim_pos);
+void						protocol_request_join(t_serveur *serv,
+								t_client *client, char *msg,
+								int proto_msg_delim_pos);
+int							protocol_join_request_parsing(char **lexed_msg,
+								t_client *client, char *msg,
+								int proto_msg_delim_pos);
+
 /*
 ** client_input_msg_parsing.c
 */
 
 void						parse_client_user_msg(t_serveur *serv,
 								t_client *client, char *msg, int msg_start);
+
+/*
+**	Send simple msg
+*/
+
+void						send_simple_chat_msg(t_serveur *serv,
+								t_client *client, char *msg,
+								int msg_start);
+void						send_msg_to_chan_users(t_channel *chan,
+								t_client *client_sender, char *msg);
 
 /*
 ** client_input_cmd_parsing.c
@@ -208,19 +237,37 @@ void						cmd_nick(t_serveur *serv,
 								int user_msg_start);
 void						cmd_join(t_serveur *serv, t_client *client,
 								char *msg, int user_msg_start);
-int							cmd_join_parse_args(char **lexed_msg, t_client *client,
-								char *msg, int user_msg_start);
+int							cmd_join_parse_args(char **lexed_msg,
+								t_client *client, char *msg,
+								int user_msg_start);
 void						cmd_leave(t_serveur *serv, t_client *client,
 								char *msg, int user_msg_start);
-int							cmd_leave_parse_arg(char **lexed_msg, t_client *client, char *msg,
+int							cmd_leave_parse_arg(char **lexed_msg,
+								t_client *client, char *msg,
+								int user_msg_start);
+void						cmd_who(t_serveur *serv, t_client *client,
+								char *msg, int user_msg_start);
+void						cmd_who_send_client_list(t_client *client,
+								t_channel *channel);
+void						cmd_list(t_serveur *serv, t_client *client,
+								char *msg, int user_msg_start);
+void						cmd_list_sending(t_serveur *serv, t_client *client);
+void						cmd_amsg(t_serveur *serv, t_client *client,
+								char *msg, int user_msg_start);
+void						cmd_amsg_sending(t_client *client, char *msg);
+void						cmd_msg(t_serveur *serv, t_client *client, char *msg,
+								int user_msg_start);
+void						cmd_quit(t_serveur *serv, t_client *client, char *msg,
 								int user_msg_start);
 
 /*
 **	Channel Handling
 */
 
-t_channel					*get_chan_from_list(t_channel_list *list, char *chan_name);
-t_channel					*create_new_chan(t_serveur *serv, char *chan_name);
+t_channel					*get_chan_from_list(t_channel_list *list,
+								char *chan_name);
+t_channel					*create_new_chan(t_serveur *serv,
+								char *chan_name);
 
 /*
 **	Channel list Handling
@@ -230,8 +277,14 @@ t_channel_list				*add_chan_to_list(t_channel_list **chan_list,
 								t_channel *new_chan);
 void						remove_chan_from_list(t_channel_list **chan_list,
 								t_channel *chan);
+
+
+/*
+**	Channel client Handling
+*/
 void						add_client_to_chan(t_channel *chan,
 								t_client *client);
+void						remove_client_from_chan(t_channel *chan, t_client *client);
 
 /*
 ** tools.c
@@ -246,7 +299,7 @@ int							get_len_to_delim(char *msg, char c);
 
 char						**string_lexer(char *msg, char delim);
 int							str_word_count(char *msg, char delim);
-void						fill_array(char **array, char *msg, char delim);
+void						fill_array(char **array, char *msg, char delim, int nb_words);
 int							get_array_count(char **array);
 void						turn_tabs_to_space(char *str);
 void						turn_nl_to_zero(char *str);

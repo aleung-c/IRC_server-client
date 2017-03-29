@@ -28,5 +28,6 @@ void	parse_client_user_msg(t_serveur *serv, t_client *client, char *msg,
 	{
 		printf(KGRN "[Server]: user chat message will be treated: %s\n" KRESET,
 			&msg[msg_start]);
+		send_simple_chat_msg(serv, client, msg, msg_start);
 	}
 }

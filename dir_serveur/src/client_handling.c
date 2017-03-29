@@ -36,10 +36,12 @@ t_client	*create_new_client(t_serveur *serv, int c_sock)
 void	set_new_client(t_serveur *serv, t_client *new_client)
 {
 	new_client->id = serv->client_handler.nb_clients;
-	ft_memcpy(new_client->nickname, "aleung-c\0", 9);
+	ft_memset(new_client->nickname, 0, 10);
 	new_client->current_channel = NULL;
 	new_client->channels_joined = NULL;
 	new_client->nb_chan_joined = 0;
+	new_client->has_nick = 0;
+	new_client->is_authentified = 0;
 	new_client->to_be_disconnected = 0;
 	clear_circular_buffer(&new_client->recv_buffer);
 	clear_circular_buffer(&new_client->write_buffer);
@@ -68,14 +70,10 @@ void		add_client_to_list(t_serveur *serv, t_client *new_client)
 	}
 }
 
-void	client_disconnect(t_serveur *serv, t_client *client)
-{
-	printf(KYEL "[Serveur]:%s client #%d (sock %d) disconnected.\n",
-		KRESET, client->id, client->sock);
-	// todo : remove channels and stuffs.
-	close(client->sock);
-	remove_client_from_list(serv, client);
-}
+/*
+**	Remove client from server's global list.
+**	see remove_client_from_chan() for the channel equivalent.
+*/
 
 void	remove_client_from_list(t_serveur *serv, t_client *client)
 {

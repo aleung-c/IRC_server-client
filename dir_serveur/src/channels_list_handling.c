@@ -79,32 +79,3 @@ void		remove_chan_from_list(t_channel_list **chan_list, t_channel *chan)
 		}
 	}
 }
-
-/*
-**	Stock client pointer into channel list of clients
-**	CLIENT -> CHANNEL_CLIENT_LIST
-*/
-
-void			add_client_to_chan(t_channel *chan, t_client *client)
-{
-	t_client_list	*client_node;
-	t_client_list	*tmp;
-
-	client_node = (t_client_list *)malloc(sizeof(t_client_list));
-	client_node->client_ptr = client;
-	client_node->next = NULL;
-	chan->nb_clients += 1;
-	if (!chan->connected_clients)
-	{
-		chan->connected_clients = client_node;
-		return ;
-	}
-	else
-	{
-		tmp = chan->connected_clients;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = client_node;
-	}
-}
-

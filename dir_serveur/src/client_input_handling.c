@@ -29,7 +29,7 @@ void	process_clients_inputs(t_serveur *serv)
 		if ((msg = get_buffer_msg(&client_i->recv_buffer)))
 		{
 			// parse msg
-			printf(KMAG "Extracted msg: [%s]\n" KRESET, msg);
+			printf(KMAG "Extracted msg: [%s] len: %d\n" KRESET, msg, (int)ft_strlen(msg));
 			// printf("buffer len: %d\nbuffer start: %d\nbuffer end: %d\n",
 			// 	client_i->recv_buffer.len,
 			// 	client_i->recv_buffer.start,

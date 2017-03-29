@@ -26,16 +26,23 @@ void	parse_client_protocol_msg(t_serveur *serv, t_client *client, char *msg)
 	{
 		if (ft_strncmp(msg, "$MSG::", proto_msg_end_pos) == 0)
 		{
-			printf(KGRN "[Server]: MSG received will be treated.\n" KRESET);
-			parse_client_user_msg(serv, client, msg, proto_msg_end_pos);
+			if (client->is_authentified == 1)
+			{
+				printf(KGRN "[Server]: MSG received will be treated.\n" KRESET);
+				parse_client_user_msg(serv, client, msg, proto_msg_end_pos);
+			}
+			else
+				protocol_auth_errmsg(client);
 		}
 		else if (ft_strncmp(msg, "$NICK::", proto_msg_end_pos) == 0)
 		{
-			printf(KGRN "[Server]: NICK protocol request received will be treated.\n" KRESET);
+			printf(KGRN "[Server]: NICK PROTOCOL request received will be treated.\n" KRESET);
+			protocol_request_nick(serv, client, msg, proto_msg_end_pos + 1);
 		}
 		else if (ft_strncmp(msg, "$JOIN::", proto_msg_end_pos) == 0)
 		{
-			printf(KGRN "[Server]: JOIN protocol request received will be treated.\n" KRESET);
+			printf(KGRN "[Server]: JOIN PROTOCOL request received will be treated.\n" KRESET);
+			protocol_request_join(serv, client, msg, proto_msg_end_pos + 1);
 		}
 		else
 		{
@@ -53,6 +60,14 @@ void	parse_client_protocol_msg(t_serveur *serv, t_client *client, char *msg)
 		send_msg(client, "]\n---- Closing connection ----\n");
 		client->to_be_disconnected = 1;
 	}
+}
+
+void	protocol_auth_errmsg(t_client *client)
+{
+	printf(KMAG "[Server]: Client not authentified.\n" KRESET);
+	send_msg(client, "$ERRSERVMSG::Authentify first with"
+		" PROTOCOL '$NICK::aleung-c' then '$JOIN::#default' \n");
+	return ;
 }
 
 /*

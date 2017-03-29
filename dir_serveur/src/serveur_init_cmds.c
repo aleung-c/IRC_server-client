@@ -26,15 +26,15 @@ void	init_cmd_list(t_serveur *serv)
 	serv->chat_cmd_table[2].name = "/leave";
 	serv->chat_cmd_table[2].function = &cmd_leave;
 	serv->chat_cmd_table[3].name = "/list";
-	serv->chat_cmd_table[3].function = NULL;
+	serv->chat_cmd_table[3].function = &cmd_list;
 	serv->chat_cmd_table[4].name = "/who";
-	serv->chat_cmd_table[4].function = NULL;
+	serv->chat_cmd_table[4].function = &cmd_who;
 	serv->chat_cmd_table[5].name = "/amsg";
-	serv->chat_cmd_table[5].function = NULL;
+	serv->chat_cmd_table[5].function = &cmd_amsg;
 	serv->chat_cmd_table[6].name = "/msg";
-	serv->chat_cmd_table[6].function = NULL;
+	serv->chat_cmd_table[6].function = &cmd_msg;
 	serv->chat_cmd_table[7].name = "/quit";
-	serv->chat_cmd_table[7].function = NULL;
+	serv->chat_cmd_table[7].function = &cmd_quit;
 	serv->chat_cmd_table[8].name = "/exit";
-	serv->chat_cmd_table[8].function = NULL;
+	serv->chat_cmd_table[8].function = &cmd_quit;
 }

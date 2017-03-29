@@ -12,9 +12,11 @@ dir_serveur/src/serveur_init.c \
 dir_serveur/src/serveur_init_cmds.c \
 dir_serveur/src/client_connection.c \
 dir_serveur/src/client_handling.c \
+dir_serveur/src/client_nick_handling.c \
 dir_serveur/src/client_input_handling.c \
 dir_serveur/src/client_input_protocol_parsing.c \
 dir_serveur/src/client_input_msg_parsing.c \
+dir_serveur/src/client_simple_msg.c \
 dir_serveur/src/client_input_cmd_parsing.c \
 dir_serveur/src/socket_input_output.c \
 dir_serveur/src/circular_buffer.c \
@@ -22,9 +24,17 @@ dir_serveur/src/circular_buffer_extraction.c \
 dir_serveur/src/circular_buffer_sending.c \
 dir_serveur/src/channels_handling.c \
 dir_serveur/src/channels_list_handling.c \
+dir_serveur/src/channels_clients_handling.c \
+dir_serveur/src/protocol_request_nick.c \
+dir_serveur/src/protocol_request_join.c \
 dir_serveur/src/cmds_functions/cmd_nick.c \
 dir_serveur/src/cmds_functions/cmd_join.c \
 dir_serveur/src/cmds_functions/cmd_leave.c \
+dir_serveur/src/cmds_functions/cmd_list.c \
+dir_serveur/src/cmds_functions/cmd_who.c \
+dir_serveur/src/cmds_functions/cmd_amsg.c \
+dir_serveur/src/cmds_functions/cmd_msg.c \
+dir_serveur/src/cmds_functions/cmd_quit.c \
 dir_serveur/src/serveur_main_loop.c
 
 OBJ_SERVEUR = $(SRC_SERVEUR:.c=.o)

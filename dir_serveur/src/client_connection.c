@@ -31,10 +31,19 @@ void			new_client_connection(t_serveur *serv)
 	ft_putnbr(serv->sock_endpoint);
 	client = create_new_client(serv, c_sock);
 	ft_printfstr(KGRN "\nNew client connected, sock: %d\n" KRESET, &(client->sock));
-	new_client_welcome(client);
+	new_client_auth_request(client);
 }
 
-void		new_client_welcome(t_client *client)
+void		new_client_auth_request(t_client *client)
+{
+	send_msg(client, "$SERVMSG::--- Connected to aleung-c's IRC SERVER ---\n");
+	send_msg(client, "$SERVMSG::\n");
+	send_msg(client, "$SERVMSG::----- Please authenticate with:\n");
+	send_msg(client, "$SERVMSG::----- $NICK::aleung-c\n");
+	send_msg(client, "$SERVMSG::----- $JOIN::#default\n\n");
+}
+
+void		new_client_auth_welcome(t_client *client)
 {
 	send_msg(client, "$SERVMSG::    _   _    ___ _   _ _  _  ___      ___  \n");
 	send_msg(client, "$SERVMSG::   /_\\ | |  | __| | | | \\| |/ __|___ / __| \n");
@@ -56,7 +65,6 @@ void		new_client_welcome(t_client *client)
 	send_msg(client, "$SERVMSG::/amsg <message> : send a message to all joined channels.\n");
 	send_msg(client, "$SERVMSG::/msg <nick> <message> : send a message to a user.\n");
 	send_msg(client, "$SERVMSG::/quit or /exit : Leave the server and closes the connection.\n\n");
-	send_msg(client, "$SERVMSG::Current channels: NONE. Try to '/join #default' !\n\n");
 }
 
 /*
@@ -77,4 +85,35 @@ int				accept_connection(t_serveur *serv)
 		ft_printfstr(KRED "accept() error.\n" KRESET, NULL);
 	}
 	return (c_sock);
+}
+
+/*
+**	TODO: most leaks here.
+*/
+
+void	client_disconnect(t_serveur *serv, t_client *client)
+{
+	printf(KYEL "[Serveur]:%s client #%d (sock %d) disconnected.\n",
+		KRESET, client->id, client->sock);
+	close(client->sock);
+	clear_client_variables(client);
+	remove_client_from_list(serv, client);
+}
+
+void	clear_client_variables(t_client *client)
+{
+	t_channel_list	*tmp;
+	t_channel_list	*to_free;
+
+	if (client->channels_joined)
+	{
+		tmp = client->channels_joined;
+		while (tmp)
+		{
+			remove_client_from_chan(tmp->chan_ptr, client);
+			to_free = tmp;
+			tmp = tmp->next;
+			free(to_free);
+		}
+	}
 }
