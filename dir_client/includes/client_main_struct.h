@@ -1,28 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client_main.c                                      :+:      :+:    :+:   */
+/*   client_main_struct.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aleung-c <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/17 16:26:46 by aleung-c          #+#    #+#             */
-/*   Updated: 2017/03/17 16:28:14 by aleung-c         ###   ########.fr       */
+/*   Created: 2017/03/29 20:37:28 by aleung-c          #+#    #+#             */
+/*   Updated: 2017/03/29 20:37:29 by aleung-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/client.h"
+#ifndef CLIENT_MAIN_STRUCT_H
+# define CLIENT_MAIN_STRUCT_H
 
-int		main(int argc, char **argv)
+# include "client.h"
+
+/*
+** ----- client Main Struct -----
+*/
+
+typedef struct				s_client
 {
-	t_client	client;
+	char					*hostname;
+	int						is_port_set;
+	int						port;
 
-	printf("Hello client\n");
-	client.is_port_set = 0;
-	if (input_args_handling(&client, argc, argv) != 0)
-	{
-		print_usage(argv[0]);
-		return (0);
-	}
-	//client_main_loop(&client);
-	return (0);
-}
+	int						is_running;
+
+	int						client_sock;
+	int						sock_endpoint;
+
+	fd_set					*read_fd_set;
+	fd_set					*write_fd_set;
+}							t_client;
+
+#endif

@@ -45,7 +45,8 @@ NAME_CLIENT = client
 
 HEADER_CLIENT = dir_client/includes/client.h
 
-SRC_CLIENT = dir_client/src/client_main.c
+SRC_CLIENT = dir_client/src/client_main.c \
+dir_client/src/input_arg_handling.c
 
 OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
 
