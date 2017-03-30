@@ -17,13 +17,23 @@ void	read_user_input(t_client *client)
 	static char		user_input_buffer[MSG_SIZE + 1];
 	int				ret;
 
-	ret = read(client->sock, user_input_buffer, MSG_SIZE);
+	ret = read(STDIN_FILENO, user_input_buffer, MSG_SIZE);
 	user_input_buffer[ret] = '\0';
 	printf("user wrote: [%s]\n", user_input_buffer);
 	if (client->is_connected == 0)
 	{
 		// not connected, read connect cmd;
 		parse_user_connection_cmd(client, user_input_buffer);
+	}
+	else if (client->is_connected == 1
+		&& client->is_authentified == 0)
+	{
+		parse_user_auth_msg(client, user_input_buffer);
+	}
+	else 
+	{
+		// parse user_chat_msg()
+		printf("todo: will parse user msg to send\n");
 	}
 }
 
@@ -36,30 +46,52 @@ void	parse_user_connection_cmd(t_client *client, char *user_input_buffer)
 	if (!lexed_msg || get_array_count(lexed_msg) != 3
 		|| lexed_msg[0][0] != '/')
 	{
-		user_connection_error("format");
-		return ;
+		return (user_input_error(lexed_msg, "format", "/connect"));
 	}
 	else
 	{
 		if (get_hostname(client, lexed_msg[1]) == -1)
 		{
-			return (user_connection_error("hostname"));
+			return (user_input_error(lexed_msg, "hostname", "/connect"));
 		}
 		else if (get_port(client, lexed_msg[2]) == -1)
 		{
-			return (user_connection_error("port"));
+			return (user_input_error(lexed_msg, "port", "/connect"));
 		}
 
 		if (connect_client(client) == -1)
 		{
 			printf("[Client]: Connection to server failed\n");
-			return ;
 		}
+		else
+		{
+			client->is_connected = 1;
+		}
+		free_lexed_array(lexed_msg);
 	}
 }
 
-void	user_connection_error(char *type)
+void	user_input_error(char **lexed_msg, char *type, char *cmd)
 {
-	printf(KMAG "[Client]: Invalid %s for /connect.%s\n", type, KRESET);
+	free_lexed_array(lexed_msg);
+	printf(KMAG "[Client]: Invalid %s for %s%s\n", type, cmd, KRESET);
+}
 
+void	parse_user_auth_msg(t_client *client, char *user_input)
+{
+	char	**lexed_msg;
+
+	lexed_msg = string_lexer(user_input, ' ');
+	if (!lexed_msg || get_array_count(lexed_msg) != 1)
+	{
+		return (user_input_error(lexed_msg, "format", "nickname"));
+	}
+	else
+	{
+		send_msg(client, "$NICK::");
+		send_msg(client, user_input);
+		send_msg(client, "\n");
+		free_lexed_array(lexed_msg);
+		client->nick_sent = 1;
+	}
 }

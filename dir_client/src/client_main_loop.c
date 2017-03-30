@@ -57,6 +57,6 @@ void				check_fd_sets(t_client *client)
 		read_user_input(client);
 	}
 	check_socket_io(client);
-//	process_clients_inputs(serv);
+	process_receiveid_msg(client);
 	return ;
 }

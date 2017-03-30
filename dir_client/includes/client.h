@@ -54,6 +54,8 @@
 # define MAX_NICK_LEN 9
 # define MAX_CHANNEL_NAME_LEN 50
 # define MAX_JOINABLE_CHAN 5
+# define DEFAULT_NICK "aleung-c"
+# define DEFAULT_CHAN "#default"
 
 /*
 **	Server structs.
@@ -105,7 +107,17 @@ void			write_socket(t_client *client);
 
 void			read_user_input(t_client *client);
 void			parse_user_connection_cmd(t_client *client, char *user_input_buffer);
-void			user_connection_error(char *type);
+void			user_input_error(char **lexed_msg, char *type, char *cmd);
+
+void			parse_user_auth_msg(t_client *client, char *user_input);
+
+/*
+**	receveid msg handling
+*/
+
+void			process_receiveid_msg(t_client *client);
+void			parse_auth_msg(t_client *client, char *msg);
+
 
 /*
 **	Circular buffer usage

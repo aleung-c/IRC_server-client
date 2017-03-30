@@ -24,7 +24,7 @@ void	protocol_request_nick(t_serveur *serv, t_client *client, char *msg,
 		printf("[Server]: Invalid protocol format: [%s]\n",
 			msg);
 		send_msg(client, "$PROTOREQ::NICK::KO::Invalid protocol format"
-							" for NICK request\n");
+							" for NICK request.\n");
 		if (lexed_msg)
 			free_lexed_array(lexed_msg);
 		return ;
@@ -37,7 +37,7 @@ void	protocol_request_nick(t_serveur *serv, t_client *client, char *msg,
 		{
 			printf("[Server]: Invalid protocol request: [%s]\n", msg);
 			send_msg(client, "$PROTOREQ::NICK::KO::NICK protocol request"
-							" ERROR: nickname too long\n");
+							" ERROR: nickname too long.\n");
 			free_lexed_array(lexed_msg);
 			return ;
 		}
@@ -48,7 +48,7 @@ void	protocol_request_nick(t_serveur *serv, t_client *client, char *msg,
 				printf("[Server]: NICK protocol request:"
 					" nickname already taken: [%s]\n", msg);
 				send_msg(client, "$PROTOREQ::NICK::KO::NICK protocol request"
-								" ERROR: nickname already taken\n");
+								" ERROR: nickname already taken.\n");
 				free_lexed_array(lexed_msg);
 				return ;
 			}

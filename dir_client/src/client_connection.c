@@ -17,7 +17,7 @@ int		connect_client(t_client *client)
 	struct hostent		*host;
 	struct protoent		*proto;
 
-	if (!client->hostname && client->is_port_set == -1)
+	if (!client->hostname || client->is_port_set == -1)
 	{
 		printf(KMAG "no hostname and port to connect.\n" KRESET);
 		return (-1);

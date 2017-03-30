@@ -25,7 +25,7 @@ int		main(int argc, char **argv)
 	}
 	if (connect_client(&client) == -1)
 	{
-		printf(KRED "[Client]: - Not connected.\n" KRESET);
+		printf(KRED "[Client]: - Not connected.%s\n", KRESET);
 	}
 	client_main_loop(&client);
 	return (0);

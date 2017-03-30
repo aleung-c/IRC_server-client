@@ -37,6 +37,7 @@ dir_serveur/src/cmds_functions/cmd_msg.c \
 dir_serveur/src/cmds_functions/cmd_quit.c \
 dir_serveur/src/serveur_main_loop.c
 
+
 OBJ_SERVEUR = $(SRC_SERVEUR:.c=.o)
 
 # ----- CLIENT
@@ -56,7 +57,8 @@ dir_client/src/tools.c \
 dir_client/src/tools_parsing.c \
 dir_client/src/client_user_input_handling.c \
 dir_client/src/client_socket_io.c \
-dir_client/src/client_main_loop.c
+dir_client/src/client_main_loop.c \
+dir_client/src/process_received_msg.c
 
 OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
 
