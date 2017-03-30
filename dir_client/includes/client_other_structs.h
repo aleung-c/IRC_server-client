@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client_main.c                                      :+:      :+:    :+:   */
+/*   client_other_structs.h                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aleung-c <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/17 16:26:46 by aleung-c          #+#    #+#             */
-/*   Updated: 2017/03/17 16:28:14 by aleung-c         ###   ########.fr       */
+/*   Created: 2017/03/30 18:46:10 by aleung-c          #+#    #+#             */
+/*   Updated: 2017/03/30 18:46:12 by aleung-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/client.h"
 
-int		main(int argc, char **argv)
+#ifndef CLIENT_OTHER_STRUCTS_H
+# define CLIENT_OTHER_STRUCTS_H
+
+# include "client.h"
+
+/*
+** ----- Circular buffer
+*/
+
+typedef struct				s_circular_buffer
 {
-	t_client	client;
+	int						is_waiting;
+	char					data[BUFFER_SIZE];
+	int						start;
+	int						end;
+	int						len;
+}							t_circular_buffer;
 
-	printf("Hello client\n");
-	init_client_vars(&client);
-	if (input_args_handling(&client, argc, argv) != 0)
-	{
-		print_usage(argv[0]);
-		return (0);
-	}
-	if (connect_client(&client) == -1)
-	{
-		printf(KRED "[Client]: - Not connected.\n" KRESET);
-	}
-	client_main_loop(&client);
-	return (0);
-}
+#endif

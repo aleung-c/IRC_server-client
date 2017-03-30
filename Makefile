@@ -46,7 +46,17 @@ NAME_CLIENT = client
 HEADER_CLIENT = dir_client/includes/client.h
 
 SRC_CLIENT = dir_client/src/client_main.c \
-dir_client/src/input_arg_handling.c
+dir_client/src/input_arg_handling.c \
+dir_client/src/circular_buffer.c \
+dir_client/src/circular_buffer_sending.c \
+dir_client/src/circular_buffer_extraction.c \
+dir_client/src/client_connection.c \
+dir_client/src/client_init.c \
+dir_client/src/tools.c \
+dir_client/src/tools_parsing.c \
+dir_client/src/client_user_input_handling.c \
+dir_client/src/client_socket_io.c \
+dir_client/src/client_main_loop.c
 
 OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
 

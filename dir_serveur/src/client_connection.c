@@ -40,6 +40,7 @@ void		new_client_auth_request(t_client *client)
 	send_msg(client, "$SERVMSG::\n");
 	send_msg(client, "$SERVMSG::----- Please authenticate with:\n");
 	send_msg(client, "$SERVMSG::----- $NICK::aleung-c\n");
+	send_msg(client, "$PROTOREQ::ASK::NICK::----- $NICK::aleung-c\n");
 	send_msg(client, "$SERVMSG::----- $JOIN::#default\n\n");
 }
 

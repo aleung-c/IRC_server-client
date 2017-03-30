@@ -28,8 +28,8 @@ void	protocol_request_join(t_serveur *serv, t_client *client, char *msg,
 	{
 		printf(KMAG "[Server]: Client already in that channel,"
 				"now current.\n" KRESET);
-		send_msg(client, "$SERVMSG::Already joined channel.\n");
-		send_msg(client, "$SERVMSG::Changed current channel to [");
+		send_msg(client, "$PROTOREQ::JOIN::OK::Already joined channel.\n");
+		send_msg(client, "$PROTOREQ::JOIN::OK::Changed current channel to [");
 		send_msg(client, lexed_msg[0]);
 		send_msg(client, "]\n");
 		client->current_channel = channel;
@@ -41,7 +41,7 @@ void	protocol_request_join(t_serveur *serv, t_client *client, char *msg,
 	add_chan_to_list(&client->channels_joined, channel);
 	client->current_channel = channel;
 	client->nb_chan_joined += 1;
-	send_msg(client, "$SERVMSG::Joined channel [");
+	send_msg(client, "$PROTOREQ::JOIN::OK::Joined channel [");
 	send_msg(client, lexed_msg[0]);
 	send_msg(client, "]\n");
 	if (client->is_authentified == 0)
@@ -62,14 +62,14 @@ int		protocol_join_request_parsing(char **lexed_msg, t_client *client,
 	{
 		printf("[Server]: Invalid arguments for JOIN request: [%s]\n",
 			msg + proto_msg_delim_pos);
-		send_msg(client, "$ERRSERVMSG::Invalid format for JOIN request protocol.\n");
+		send_msg(client, "$PROTOREQ::JOIN::KO::Invalid format for JOIN request protocol.\n");
 		error = -1;
 	}
 	else if (lexed_msg[0] && ft_strlen(lexed_msg[0]) > MAX_CHANNEL_NAME_LEN)
 	{
 		printf("[Server]: Channel name too long(%d char max): [%s]\n",
 			MAX_CHANNEL_NAME_LEN, msg + proto_msg_delim_pos);
-		send_msg(client, "$ERRSERVMSG::Channel name too long for"
+		send_msg(client, "$PROTOREQ::JOIN::KO::Channel name too long for"
 						" JOIN request protocol.\n");
 		error = -1;
 	}
@@ -77,7 +77,7 @@ int		protocol_join_request_parsing(char **lexed_msg, t_client *client,
 	{
 		printf("[Server]: Channel name must start: [%s]\n",
 			msg + proto_msg_delim_pos);
-		send_msg(client, "$ERRSERVMSG::Channel name must start with '#'\n");
+		send_msg(client, "$PROTOREQ::JOIN::KO::Channel name must start with '#'\n");
 		error = -1;
 	}
 	if (lexed_msg && error == -1)

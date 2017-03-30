@@ -27,11 +27,30 @@ typedef struct				s_client
 
 	int						is_running;
 
-	int						client_sock;
+	int						is_connected;
+	int						to_be_disconnected;
+
+	int						is_authentified;
+
+	int						default_nick_sent;
+	int						default_nick_refused;
+	int						nick_sent;
+	int						nick_refused;
+	int						nick_validated;
+	int						join_sent;
+	int						join_validated;
+
+	struct sockaddr_in		sin;
+
+	int						sock;
 	int						sock_endpoint;
 
 	fd_set					*read_fd_set;
 	fd_set					*write_fd_set;
+
+	t_circular_buffer		recv_buffer;
+	t_circular_buffer		write_buffer;
+
 }							t_client;
 
 #endif

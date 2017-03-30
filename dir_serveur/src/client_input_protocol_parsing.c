@@ -42,6 +42,12 @@ void	parse_client_protocol_msg(t_serveur *serv, t_client *client, char *msg)
 		else if (ft_strncmp(msg, "$JOIN::", proto_msg_end_pos) == 0)
 		{
 			printf(KGRN "[Server]: JOIN PROTOCOL request received will be treated.\n" KRESET);
+			if (client->has_nick == 0)
+			{
+				printf(KMAG "[Server]: Client needs a nickname before joining.%s\n", KRESET);
+				send_msg(client, "ERRSERVMSG::Client needs a $NICK:: first!");
+				return ;
+			}
 			protocol_request_join(serv, client, msg, proto_msg_end_pos + 1);
 		}
 		else

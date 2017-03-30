@@ -28,6 +28,7 @@ int		input_args_handling(t_client *client, int argc, char **argv)
 		return (0);
 	}
 	// no arg here
+
 	return (0);
 }
 
@@ -61,6 +62,7 @@ int		get_hostname(t_client *client, char *arg)
 		i++;
 	}
 	client->hostname = arg;
+	printf("hostname: %s\n", client->hostname);
 	return (0);
 }
 

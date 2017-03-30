@@ -25,6 +25,7 @@
 # include <netinet/in.h>
 # include <arpa/inet.h>
 # include <time.h>
+# include <netdb.h>
 
 /*
 **	color in text;
@@ -48,6 +49,8 @@
 # define PROTOCOL_MAX_MSG_SIZE 10
 # define CMD_MAX_LEN 10
 
+# define MSG_DELIM '\n'
+
 # define MAX_NICK_LEN 9
 # define MAX_CHANNEL_NAME_LEN 50
 # define MAX_JOINABLE_CHAN 5
@@ -56,16 +59,88 @@
 **	Server structs.
 */
 
+# include "client_other_structs.h"
 # include "client_main_struct.h"
 
 /*
 ** ----- Function prototypes
 */
 
+/*
+**	Init functions.
+*/
+
+void			init_client_vars(t_client *client);
+
 int				input_args_handling(t_client *client, int argc, char **argv);
 void			print_usage(char *arg);
 
+
+int				connect_client(t_client *client);
 int				get_hostname(t_client *client, char *arg);
 int				get_port(t_client *client, char *arg);
+
+void			close_connection(t_client *client);
+
+/*
+**	Main loop
+*/
+
+void			client_main_loop(t_client *client);
+void			init_fd(t_client *client);
+struct timeval	*set_select_timeout(struct timeval *t);
+void			check_fd_sets(t_client *client);
+
+/*
+**	Socket reading/sending
+*/
+
+void			check_socket_io(t_client *client);
+int				read_socket(t_client *client);
+void			write_socket(t_client *client);
+
+/*
+**	user input handling
+*/
+
+void			read_user_input(t_client *client);
+void			parse_user_connection_cmd(t_client *client, char *user_input_buffer);
+void			user_connection_error(char *type);
+
+/*
+**	Circular buffer usage
+*/
+
+void			write_into_buffer(t_circular_buffer *buffer,
+					char *str, int len);
+int				get_buffer_space(t_circular_buffer *buffer);
+void			clear_circular_buffer(t_circular_buffer *buffer);
+char			*get_buffer_str(t_circular_buffer *buffer);
+
+char			*extract_buffer_str(t_circular_buffer *buffer);
+char			*get_buffer_delimstr(t_circular_buffer *buffer, int delim_count);
+int				search_buffer_delim(t_circular_buffer *buffer);
+char			*get_buffer_msg(t_circular_buffer *buffer);
+void			send_msg(t_client *client, char *msg);
+int				extract_datas_to_send(t_circular_buffer *buffer,
+					char *send_buffer);
+
+/*
+**	tools
+*/
+
+void			*s_malloc(size_t size);
+void			print_reception(char *msg);
+void			print_sending(char *msg, int len);
+void			replace_nl(char *str, int len);
+int				get_len_to_delim(char *msg, char c);
+
+char			**string_lexer(char *msg, char delim);
+int				str_word_count(char *msg, char delim);
+void			fill_array(char **array, char *msg, char delim, int nb_words);
+int				get_array_count(char **array);
+void			turn_tabs_to_space(char *str);
+void			turn_nl_to_zero(char *str);
+void			free_lexed_array(char **array);
 
 #endif
