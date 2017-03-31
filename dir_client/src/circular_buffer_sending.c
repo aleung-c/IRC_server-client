@@ -47,8 +47,4 @@ int		extract_datas_to_send(t_circular_buffer *buffer, char *send_buffer)
 	}
 	buffer->start = write_pos + 1;
 	return (i);
-	// DEBUG PRINT
-	// char *buff_cpy = ft_strdup(buffer->data);
-	// replace_nl(buff_cpy, ft_strlen(buff_cpy));
-	// printf("in buff: [%.*s]\n", BUFFER_SIZE, buff_cpy);
 }

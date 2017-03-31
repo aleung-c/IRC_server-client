@@ -22,7 +22,8 @@ void			new_client_connection(t_serveur *serv)
 	int					c_sock;
 	t_client			*client;
 
-	ft_printfstr(KGRN "\n- New client connection process started -\n" KRESET, NULL);
+	printf(KGRN "\n- New client connection process started -%s\n",
+		KRESET);
 	if ((c_sock = accept_connection(serv)) < 0)
 		return ;
 	serv->sock_endpoint = c_sock > serv->sock_endpoint ? c_sock :
@@ -30,7 +31,8 @@ void			new_client_connection(t_serveur *serv)
 	ft_printfstr("sock_endpoint: ", NULL);
 	ft_putnbr(serv->sock_endpoint);
 	client = create_new_client(serv, c_sock);
-	ft_printfstr(KGRN "\nNew client connected, sock: %d\n" KRESET, &(client->sock));
+	ft_printfstr(KGRN "\nNew client connected, sock: %d\n" KRESET,
+		&(client->sock));
 	new_client_auth_request(client);
 }
 

@@ -23,23 +23,18 @@ void	process_receiveid_msg(t_client *client)
 
 	if ((msg = get_buffer_msg(&client->recv_buffer)))
 	{
-		// printf("Extracted %s%d%s chars: [%s%s%s]\n",
-		// 	KYEL, (int)ft_strlen(msg), KRESET,
-		// 	KYEL, msg, KRESET);
 		if (client->is_authentified == 0)
 		{
 			parse_auth_msg(client, msg);
 		}
 		else
 		{
-			//printf("todo: will parse received msg !\n");
 			parse_regular_msg(client, msg);
 		}
 		free(msg);
 	}
 }
 
-// todo: maybe problem with finishing \n
 void	parse_auth_msg(t_client *client, char *msg)
 {
 	if (client->is_authentified == 0)

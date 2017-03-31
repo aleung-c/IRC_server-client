@@ -12,6 +12,11 @@
 
 #include "../includes/client.h"
 
+/*
+**	My protocol delimiting always with"::", i display by moving through these
+**	"::". That is why the syntax is peculiar.
+*/
+
 void	display_public_msg(t_client *client, char *msg)
 {
 	int		arg1_pos;
@@ -20,11 +25,8 @@ void	display_public_msg(t_client *client, char *msg)
 
 	(void)client;
 	arg1_pos = len_to_next_proto_arg(msg) + 2;
-	//printf("arg 1: %s\n", msg + arg1_pos);
 	arg2_pos = arg1_pos + len_to_next_proto_arg(msg + arg1_pos) + 2;
-	//printf("arg 2: %s\n", msg + arg2_pos);
 	arg3_pos = arg2_pos + len_to_next_proto_arg(msg + arg2_pos) + 2;
-	//printf("arg 3: %s\n", msg + arg3_pos);
 
 	printf("[%s%.*s%s] %s%.*s%s: %s\n", KCYN,
 		arg2_pos - arg1_pos - 2, msg + arg1_pos, KRESET, KYEL,
@@ -39,9 +41,7 @@ void	display_private_msg(t_client *client, char *msg)
 
 	(void)client;
 	arg1_pos = len_to_next_proto_arg(msg) + 2;
-	//printf("arg 1: %s\n", msg + arg1_pos);
 	arg2_pos = arg1_pos + len_to_next_proto_arg(msg + arg1_pos) + 2;
-	//printf("arg 2: %s\n", msg + arg2_pos);
 	
 
 	printf("(%sWhisper%s %s>>>>%s %s%.*s%s): %s\n", KCYN, KRESET, KBLU, KRESET,

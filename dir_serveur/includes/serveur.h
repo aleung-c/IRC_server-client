@@ -53,14 +53,14 @@
 # define LISTEN_MAX_CLIENTS 10
 
 # define BUFFER_SIZE 4096
-# define MSG_SIZE 512 // default 512
+# define MSG_SIZE 512
 
 # define MSG_DELIM '\n'
 
 # define PROTOCOL_MAX_MSG_SIZE 10
 # define CMD_MAX_LEN 10
 # define PRIV_MSG_DEST_MAX_LEN 9
-# define TEXT_MSG_MAX_LEN 400 // 512 - 10 - 10 - 10 ....
+# define TEXT_MSG_MAX_LEN 400
 
 /*
 **	Server parsing defines
@@ -172,6 +172,7 @@ void						parse_client_protocol_msg(t_serveur *serv,
 int							get_protocol_msg_end_pos(char *msg);
 
 void						protocol_auth_errmsg(t_client *client);
+void						critical_protocol_error(t_client *client);
 
 /*
 ** protocol requests.
@@ -287,6 +288,7 @@ void						remove_chan_from_list(t_channel_list **chan_list,
 /*
 **	Channel client Handling
 */
+
 void						add_client_to_chan(t_channel *chan,
 								t_client *client);
 void						remove_client_from_chan(t_channel *chan, t_client *client);

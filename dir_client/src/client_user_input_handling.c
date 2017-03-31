@@ -19,11 +19,9 @@ void	read_user_input(t_client *client)
 
 	ret = read(STDIN_FILENO, user_input_buffer, MSG_SIZE);
 	user_input_buffer[ret] = '\0';
-	//printf("user wrote: [%s]\n", user_input_buffer);
 	if (ft_strlen(user_input_buffer) > 0
 		&&client->is_connected == 0)
 	{
-		// not connected, read connect cmd;
 		parse_user_connection_cmd(client, user_input_buffer);
 	}
 	else if (client->is_connected == 1
@@ -31,7 +29,7 @@ void	read_user_input(t_client *client)
 	{
 		parse_user_auth_msg(client, user_input_buffer);
 	}
-	else 
+	else
 	{
 		parse_user_chat_msg(client, user_input_buffer);
 	}
@@ -45,20 +43,13 @@ void	parse_user_connection_cmd(t_client *client, char *user_input_buffer)
 	lexed_msg = string_lexer(user_input_buffer, ' ');
 	if (!lexed_msg || get_array_count(lexed_msg) != 3
 		|| lexed_msg[0][0] != '/')
-	{
 		return (user_input_error(lexed_msg, "format", "/connect"));
-	}
 	else
 	{
 		if (get_hostname(client, lexed_msg[1]) == -1)
-		{
 			return (user_input_error(lexed_msg, "hostname", "/connect"));
-		}
 		else if (get_port(client, lexed_msg[2]) == -1)
-		{
 			return (user_input_error(lexed_msg, "port", "/connect"));
-		}
-
 		if (connect_client(client) == -1)
 		{
 			printf(KMAG "[Client]: Connection to server failed,"
@@ -66,9 +57,7 @@ void	parse_user_connection_cmd(t_client *client, char *user_input_buffer)
 			put_prompt();
 		}
 		else
-		{
 			client->is_connected = 1;
-		}
 		free_lexed_array(lexed_msg);
 	}
 }
@@ -108,7 +97,5 @@ void	parse_user_chat_msg(t_client *client, char *user_input)
 		send_msg(client, "\n");
 	}
 	else
-	{
 		printf(KMAG "[Client]: Chat message too long.%s\n", KRESET);
-	}
 }

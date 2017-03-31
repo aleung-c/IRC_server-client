@@ -78,7 +78,6 @@ int		search_buffer_delim(t_circular_buffer *buffer)
 		{
 			if (i == 0)
 			{
-				//printf("found delim at 0, advancing buff\n");
 				buffer->start = (buffer->start + 1) % BUFFER_SIZE;
 				if (buffer->len > 0)
 					buffer->len--;

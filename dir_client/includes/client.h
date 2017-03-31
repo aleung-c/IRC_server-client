@@ -44,7 +44,7 @@
 # define HOSTNAME_MAX_LEN 255
 
 # define BUFFER_SIZE 4096
-# define MSG_SIZE 512 // default 512
+# define MSG_SIZE 512
 
 # define PROTOCOL_MAX_MSG_SIZE 10
 # define CMD_MAX_LEN 10

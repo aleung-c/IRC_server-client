@@ -20,15 +20,12 @@ int		input_args_handling(t_client *client, int argc, char **argv)
 	}
 	else if (argc == 3)
 	{
-		// catch args
 		if (get_hostname(client, argv[1]) == -1)
 			return (-1);
 		if (get_port(client, argv[2]) == -1)
 			return (-1);
 		return (0);
 	}
-	// no arg here
-
 	return (0);
 }
 
@@ -48,9 +45,7 @@ int		get_hostname(t_client *client, char *arg)
 
 	i = 0;
 	if (ft_strlen(arg) > HOSTNAME_MAX_LEN)
-	{
 		printf(KRED "Hostname too long.\n" KRESET);
-	}
 	while (arg[i])
 	{
 		if (!ft_isalnum(arg[i]) && arg[i] != '.')

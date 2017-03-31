@@ -37,7 +37,8 @@ void	send_simple_chat_msg(t_serveur *serv, t_client *client, char *msg,
 		}
 		else
 		{
-			printf(KMAG "[Server]: No current channel for client #%d: [%.*s...]\n" KRESET,
+			printf(KMAG "[Server]: No current channel"
+						" for client #%d: [%.*s...]\n" KRESET,
 				client->id, TEXT_MSG_MAX_LEN / 2, msg + msg_start);
 			send_msg(client, "$ERRSERVMSG::No current channel to send"
 				"messages, try to /join one!\n");

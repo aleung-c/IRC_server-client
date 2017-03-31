@@ -28,21 +28,16 @@ void	check_sockets_io(t_serveur *serv)
 	{
 		if (FD_ISSET(client_i->sock, serv->read_fd_set))
 		{
-			// client sent datas to be recv()ed.
-			// but, if datas received == 0, it means client disconected.
 			read_ret = read_client_socket(serv, client_i);
 			if (read_ret == 0)
 			{
 				client_disconnect(serv, client_i);
 			}
-			// -> all good, datas collected in circ buffs.
 		}
 		if (client_i && FD_ISSET(client_i->sock, serv->write_fd_set))
 		{
-			// serveur may send datas to client.
 			write_client_socket(serv, client_i);
 		}
-		// no msg waiting to be sent, disconnect him.
 		if (client_i->write_buffer.len == 0
 			&& client_i->to_be_disconnected == 1)
 			client_disconnect(serv, client_i);
@@ -69,14 +64,16 @@ int		read_client_socket(t_serveur *serv, t_client *client)
 	{
 		ret = recv(client->sock, recv_buffer, buff_free_space, 0);
 		recv_buffer[ret] = '\0';
-		write_into_buffer(&client->recv_buffer, recv_buffer, ft_strlen(recv_buffer));
+		write_into_buffer(&client->recv_buffer, recv_buffer,
+			ft_strlen(recv_buffer));
 		print_reception(recv_buffer, client);
 		return (ret);
 	}
 	else if (client->recv_buffer.is_waiting == 0)
 	{
-		printf(KYEL "[Client #%d sock %d]: Buffer waiting for processing...\n" KRESET,
-			client->id, client->sock);
+		printf(KYEL "[Client #%d sock %d]:"
+					" Buffer waiting for processing...\n" KRESET,
+					client->id, client->sock);
 		client->recv_buffer.is_waiting = 1;
 	}
 	return (-1);
@@ -94,10 +91,8 @@ void	write_client_socket(t_serveur *serv, t_client *client)
 	int				ret;
 
 	(void)serv;
-	(void)client;
 	if (client->write_buffer.len > 0)
 	{
-		// there are datas to be sent.
 		to_send = extract_datas_to_send(&client->write_buffer, send_buffer);
 		ret = send(client->sock, send_buffer, to_send, 0);
 		print_sending(send_buffer, client, to_send);

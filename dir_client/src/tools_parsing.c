@@ -27,13 +27,6 @@ char	**string_lexer(char *msg, char delim)
 		exit(-1);
 	ret[nb_words] = NULL;
 	fill_array(ret, msg, delim, nb_words);
-	// DEBUG PRINTING;
-	printf("nb words: %d\n", nb_words);
-	while (ret[i])
-	{
-		printf("[%s]\n", ret[i]);
-		i++;
-	}
 	return (ret);
 }
 
@@ -79,7 +72,6 @@ void	fill_array(char **array, char *msg, char delim, int nb_words)
 				y++;
 			if (!(array[array_count] = (char *)malloc(sizeof(char) * y)))
 				exit(-1);
-			printf("y = %d\n", y);
 			ft_memcpy(array[array_count], msg + i, y);
 			array[array_count][y] = '\0';
 			array_count++;

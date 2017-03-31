@@ -28,7 +28,6 @@ void	init_client_vars(t_client *client)
 	client->nick_validated = 0;
 	client->join_sent = 0;
 	client->join_validated = 0;
-
 	client->read_fd_set = (fd_set *)s_malloc((sizeof(fd_set)));
 	client->write_fd_set = (fd_set *)s_malloc((sizeof(fd_set)));
 	clear_circular_buffer(&client->recv_buffer);

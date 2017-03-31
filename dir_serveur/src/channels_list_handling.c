@@ -18,11 +18,6 @@
 
 void	client_joins_chan(t_client *client, t_channel *chan)
 {
-	if (!client || !chan)
-	{
-		printf("NULLPTR\n");
-		exit (-1);
-	}
 	add_client_to_chan(chan, client);
 	add_chan_to_list(&(client->channels_joined), chan);
 	client->current_channel = chan;
@@ -100,6 +95,6 @@ void		remove_chan_from_list(t_channel_list **chan_list, t_channel *chan)
 			tmp = tmp2;
 			tmp2 = tmp2->next;
 		}
-		printf("Error: channel not found\n");
+		printf(KRED "Error: channel not found\n" KRESET);
 	}
 }

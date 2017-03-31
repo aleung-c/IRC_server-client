@@ -36,48 +36,51 @@ void	parse_client_protocol_msg(t_serveur *serv, t_client *client, char *msg)
 		}
 		else if (ft_strncmp(msg, "$NICK::", proto_msg_end_pos) == 0)
 		{
-			printf(KGRN "[Server]: NICK PROTOCOL request received will be treated.\n" KRESET);
+			printf(KGRN "[Server]: NICK PROTOCOL request received will"
+						" be treated.\n" KRESET);
 			protocol_request_nick(serv, client, msg, proto_msg_end_pos + 1);
 		}
 		else if (ft_strncmp(msg, "$JOIN::", proto_msg_end_pos) == 0)
 		{
-			printf(KGRN "[Server]: JOIN PROTOCOL request received will be treated.\n" KRESET);
+			printf(KGRN "[Server]: JOIN PROTOCOL request received will"
+						" be treated.\n" KRESET);
 			if (client->has_nick == 0)
 			{
-				printf(KMAG "[Server]: Client needs a nickname before joining.%s\n", KRESET);
+				printf(KMAG "[Server]: Client needs a nickname before"
+							" joining.%s\n", KRESET);
 				send_msg(client, "ERRSERVMSG::Client needs a $NICK:: first!");
 				return ;
 			}
 			protocol_request_join(serv, client, msg, proto_msg_end_pos + 1);
 		}
 		else
-		{
-			printf(KRED "[Server]: protocol format ok, but not a recognized protocol"
-				" request.\n" KRESET);
-		}
+			critical_protocol_error(client);
 	}
 	else
-	{
-		printf(KMAG "[Server]: Not a protocol msg! - [client #%d sock %d]: [%s]\n" KRESET,
-			client->id, client->sock, msg);
-		send_msg(client, KRED "[Server]: PROTOCOL ERROR - This is not a protocol input: " KRESET);
-		send_msg(client, "[");
-		send_msg(client, msg);
-		send_msg(client, "]\n---- Closing connection ----\n");
-		client->to_be_disconnected = 1;
-	}
+		critical_protocol_error(client);
 }
 
 void	protocol_auth_errmsg(t_client *client)
 {
 	printf(KMAG "[Server]: Client not authentified.\n" KRESET);
 	send_msg(client, "$ERRSERVMSG::Authentify first with"
-		" PROTOCOL '$NICK::aleung-c' then '$JOIN::#default' \n");
+		" PROTOCOL '$NICK::aleung-c' then '$JOIN::#default'\n");
 	return ;
 }
 
+void	critical_protocol_error(t_client *client)
+{
+	printf(KMAG "[Server]: Not a protocol msg! - [client #%d sock %d]\n"
+			KRESET, client->id, client->sock);
+	send_msg(client, KRED "[Server]: CRITICAL PROTOCOL ERROR -"
+		" Not a protocol input: Unauthorized client." KRESET);
+	send_msg(client, "\n---- Closing connection ----\n");
+	client->to_be_disconnected = 1;
+}
+
 /*
-**	In my protocol, msg between server and client must have this form: [$MSG::XXXX\n]
+**	In my protocol, msg between server and client
+**	must have this form: [$MSG::XXXX\n]
 **	Everything following the :: will be the user input.
 */
 
@@ -87,9 +90,7 @@ int		get_protocol_msg_end_pos(char *msg)
 
 	i = 0;
 	if (!msg[i] || msg[i] != '$')
-	{
 		return (-1);
-	}
 	while (msg[i] && i < PROTOCOL_MAX_MSG_SIZE)
 	{
 		if (msg[i] && msg[i] == ':' && msg[i + 1] && msg[i + 1] == ':')

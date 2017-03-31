@@ -53,13 +53,6 @@ void	*s_malloc(size_t size)
 
 void	print_reception(char *msg, t_client *client)
 {
-	// char	*msg_cpy;
-
-	// msg_cpy = ft_strdup(msg);
-	// replace_nl(msg_cpy, ft_strlen(msg_cpy));
-	// printf(KCYN "<<<<< [client #%d, sock %d]:%s [%s]\n",
-	// 	client->id, client->sock, KRESET, msg_cpy);
-	// free(msg_cpy);
 	int i;
 
 	i = 0;

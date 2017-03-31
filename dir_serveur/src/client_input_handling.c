@@ -28,18 +28,15 @@ void	process_clients_inputs(t_serveur *serv)
 	{
 		if ((msg = get_buffer_msg(&client_i->recv_buffer)))
 		{
-			// parse msg
-			printf(KMAG "Extracted msg: [%s] len: %d\n" KRESET, msg, (int)ft_strlen(msg));
-			// printf("buffer len: %d\nbuffer start: %d\nbuffer end: %d\n",
-			// 	client_i->recv_buffer.len,
-			// 	client_i->recv_buffer.start,
-			// 	client_i->recv_buffer.end);
+			printf(KMAG "Extracted msg: [%s] len: %d\n" KRESET,
+				msg, (int)ft_strlen(msg));
 			parse_client_protocol_msg(serv, client_i, msg);
 			free(msg);
 		}
 		else if (client_i->recv_buffer.is_waiting == 1)
 		{
-			printf(KYEL "[Client #%d sock %d]: sent msg too long -> cutting msg\n" KRESET,
+			printf(KYEL "[Client #%d sock %d]: sent msg too long"
+						" -> cutting msg\n" KRESET,
 				client_i->id, client_i->sock);
 				client_i->recv_buffer.is_waiting = 0;
 			clear_circular_buffer(&client_i->recv_buffer);

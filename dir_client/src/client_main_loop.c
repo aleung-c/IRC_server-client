@@ -34,10 +34,7 @@ void	init_fd(t_client *client)
 {
 	FD_ZERO(client->read_fd_set);
 	FD_ZERO(client->write_fd_set);
-	
-	// Surveille l'entrée standard pour exit propre quand enter presse
 	FD_SET(STDIN_FILENO, client->read_fd_set);
-
 	if (client->is_connected)
 	{
 		FD_SET(client->sock, client->read_fd_set);
