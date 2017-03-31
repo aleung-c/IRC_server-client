@@ -39,7 +39,8 @@ void		cmd_leave(t_serveur *serv, t_client *client, char *msg,
 	{
 		printf(KMAG "[Server]: Channel to leave not found: [%s]\n" KRESET,
 			lexed_msg[1]);
-		send_msg(client, "$ERRSERVMSG::Channel to /leave not found.\n");
+		send_msg(client, "$ERRSERVMSG::Channel to /leave not found.\n"
+							"$PROMPT::\n");
 		return ;
 	}
 	else
@@ -83,7 +84,6 @@ void	leave_all_chans(t_client *client)
 	tmp = client->channels_joined;
 	while (tmp)
 	{
-		printf("hey2\n");
 		leave_one_chan(client, tmp->chan_ptr);
 		tmp = client->channels_joined;
 	}
@@ -91,14 +91,13 @@ void	leave_all_chans(t_client *client)
 
 void	leave_one_chan(t_client *client, t_channel *channel)
 {
-	printf("hey3\n");
 	remove_chan_from_list(&client->channels_joined, channel);
+
 	remove_client_from_chan(channel, client);
 	client->nb_chan_joined -= 1;
 	send_msg(client, "$SERVMSG::left channel [");
 	send_msg(client, channel->name);
-	send_msg(client, "]\n");
-	send_msg(client, "$PROMPT::\n");
+	send_msg(client, "]\n$PROMPT::\n");
 	if (channel == client->current_channel)
 	{
 		if (client->channels_joined)

@@ -31,14 +31,13 @@ void	parse_client_chat_cmd(t_serveur *serv, t_client *client, char *msg,
 	{
 		printf("[Server]: chat cmd too long(%d char max): [%s]\n",
 			CMD_MAX_LEN, msg + msg_start);
+		send_msg(client, "$ERRSERVMSG::Chat command too long.\n$PROMPT::\n");
 		return ;
 	}
-	//printf("cmd len = %d\n", (int)cmd_len);
 	i = 0;
 	chat_cmd = serv->chat_cmd_table;
 	while (i < NB_OF_CMDS)
 	{
-		//printf("chat cmd len = %d\n", (int)ft_strlen(chat_cmd[i].name));
 		if (ft_strncmp(msg + msg_start, chat_cmd[i].name,
 			ft_strlen(chat_cmd[i].name) - 1) == 0
 			&& cmd_len == ft_strlen(chat_cmd[i].name))
@@ -51,4 +50,5 @@ void	parse_client_chat_cmd(t_serveur *serv, t_client *client, char *msg,
 	}
 	printf(KMAG "[Server]: cmd does not exist: [%s]\n" KRESET,
 			msg + msg_start);
+	send_msg(client, "$ERRSERVMSG::No such chat command.\n$PROMPT::\n");
 }

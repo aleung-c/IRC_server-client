@@ -78,15 +78,18 @@ void		remove_chan_from_list(t_channel_list **chan_list, t_channel *chan)
 	if (!tmp)
 		return ;
 	tmp2 = tmp->next;
-	if (!tmp2 && tmp->chan_ptr == chan)
+	if (tmp->chan_ptr == chan)
 	{
 		free(tmp);
-		*chan_list = NULL;
+		if (!tmp2)
+			*chan_list = NULL;
+		else
+			*chan_list = tmp2;
 		return ;
 	}
 	else
 	{
-		while (tmp2) // TODO : error here.
+		while (tmp2)
 		{
 			if (tmp2->chan_ptr == chan)
 			{
@@ -97,5 +100,6 @@ void		remove_chan_from_list(t_channel_list **chan_list, t_channel *chan)
 			tmp = tmp2;
 			tmp2 = tmp2->next;
 		}
+		printf("Error: channel not found\n");
 	}
 }

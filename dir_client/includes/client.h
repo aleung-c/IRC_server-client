@@ -119,7 +119,13 @@ void			process_receiveid_msg(t_client *client);
 void			parse_auth_msg(t_client *client, char *msg);
 void			parse_regular_msg(t_client *client, char *msg);
 
+/*
+**	Displayin receveid msg
+*/
+
 void			display_public_msg(t_client *client, char *msg);
+void			display_private_msg(t_client *client, char *msg);
+void			display_error_msg(t_client *client, char *msg);
 
 /*
 **	Circular buffer usage

@@ -25,7 +25,6 @@ void	protocol_request_join(t_serveur *serv, t_client *client, char *msg,
 
 	if ((channel = get_chan_from_list(client->channels_joined, lexed_msg[0])))
 	{
-		// channel str FOUND in client channel list.
 		printf(KMAG "[Server]: Client already in that channel,"
 				"now current.\n" KRESET);
 		send_msg(client, "$PROTOREQ::JOIN::OK::Already joined channel.\n");
@@ -36,18 +35,9 @@ void	protocol_request_join(t_serveur *serv, t_client *client, char *msg,
 		return ;
 	}
 	else if (!(channel = get_chan_from_list(serv->channel_list, lexed_msg[0])))
-	{
 		channel = create_new_chan(serv, lexed_msg[0]);
-	}
 	else
-	{
 		printf(KGRN "[Server]: Client joined existing channel!\n" KRESET);
-	}
-	if (!channel)
-	{
-		printf("NULLPTR\n");
-		exit (-1);
-	}
 	client_joins_chan(client, channel);
 	send_msg(client, "$PROTOREQ::JOIN::OK::Joined channel [");
 	send_msg(client, channel->name);

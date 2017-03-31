@@ -24,6 +24,7 @@ void		cmd_quit(t_serveur *serv, t_client *client, char *msg,
 		printf("[Server]: Invalid arguments for exit command: [%s]\n",
 			msg + user_msg_start);
 		send_msg(client, "$ERRSERVMSG::Invalid arguments for exit\n");
+		send_msg(client, "$PROMPT::\n");
 		free_lexed_array(lexed_msg);
 		return ;
 	}

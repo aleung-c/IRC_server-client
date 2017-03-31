@@ -20,9 +20,11 @@ void	cmd_list(t_serveur *serv, t_client *client, char *msg,
 	lexed_msg = string_lexer(msg + user_msg_start, ' ');
 	if (!lexed_msg || get_array_count(lexed_msg) > 1)
 	{
-		printf("[Server]: Invalid arguments for /list command: [%s]\n",
+		printf("[Server]: Invalid arguments for /list command: [%s]\n"
+					"$PROMPT::\n",
 			msg + user_msg_start);
 		send_msg(client, "$ERRSERVMSG::Invalid arguments for command /list\n");
+		send_msg(client, "$PROMPT::\n");
 		if (lexed_msg)
 			free_lexed_array(lexed_msg);
 		return ;
@@ -33,7 +35,7 @@ void	cmd_list(t_serveur *serv, t_client *client, char *msg,
 		printf(KMAG "[Server]: No channel opened on the server%d\n" KRESET,
 			client->id);
 		send_msg(client, "$ERRSERVMSG::No channel opened on the server,"
-			" create one with /join !\n");
+			" create one with /join !\n$PROMPT::\n");
 		return ;
 	}
 	else
@@ -56,5 +58,5 @@ void	cmd_list_sending(t_serveur *serv, t_client *client)
 			send_msg(client, " ");
 		tmp = tmp->next;
 	}
-	send_msg(client, "\n");
+	send_msg(client, "\n$PROMPT::\n");
 }

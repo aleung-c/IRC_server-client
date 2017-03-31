@@ -87,7 +87,6 @@ void	parse_auth_msg(t_client *client, char *msg)
 			printf(KGRN "[Client]: Authentification SUCCESS -%s\n", KRESET);
 		}
 	}
-
 }
 
 void	parse_regular_msg(t_client *client, char *msg)
@@ -101,6 +100,14 @@ void	parse_regular_msg(t_client *client, char *msg)
 		if (ft_strncmp(msg, "$PUBLICMSG::", 11) == 0)
 		{
 			display_public_msg(client, msg);
+		}
+		if (ft_strncmp(msg, "$PRIVATEMSG::", 12) == 0)
+		{
+			display_private_msg(client, msg);
+		}
+		else if (ft_strncmp(msg, "$ERRSERVMSG::", 12) == 0)
+		{
+			display_error_msg(client, msg);
 		}
 		else if (ft_strncmp(msg, "$PROMPT::", 9) == 0)
 		{

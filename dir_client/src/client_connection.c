@@ -71,6 +71,14 @@ void	close_connection(t_client *client)
 				KRESET);
 		close(client->sock);
 		client->is_connected = 0;
+		client->is_authentified = 0;
+		client->default_nick_sent = 0;
+		client->default_nick_refused = 0;
+		client->nick_sent = 0;
+		client->nick_refused = 0;
+		client->nick_validated = 0;
+		client->join_sent = 0;
+		client->join_validated = 0;
 		put_prompt();
 	}
 }
