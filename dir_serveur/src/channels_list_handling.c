@@ -18,8 +18,13 @@
 
 void	client_joins_chan(t_client *client, t_channel *chan)
 {
+	if (!client || !chan)
+	{
+		printf("NULLPTR\n");
+		exit (-1);
+	}
 	add_client_to_chan(chan, client);
-	add_chan_to_list(&client->channels_joined, chan);
+	add_chan_to_list(&(client->channels_joined), chan);
 	client->current_channel = chan;
 	client->nb_chan_joined += 1;
 	send_msg(client, "$SERVMSG::Joined channel [");
@@ -44,6 +49,7 @@ t_channel_list		*add_chan_to_list(t_channel_list **chan_list, t_channel *new_cha
 	new_node->chan_ptr = new_chan;
 	if (!(*chan_list))
 	{
+		printf(KBLU "New node added\n" KRESET);
 		*chan_list = new_node;
 		return (new_node);
 	}
@@ -80,7 +86,7 @@ void		remove_chan_from_list(t_channel_list **chan_list, t_channel *chan)
 	}
 	else
 	{
-		while (tmp2)
+		while (tmp2) // TODO : error here.
 		{
 			if (tmp2->chan_ptr == chan)
 			{
@@ -89,8 +95,7 @@ void		remove_chan_from_list(t_channel_list **chan_list, t_channel *chan)
 				return ;
 			}
 			tmp = tmp2;
-			if (tmp2)
-				tmp2 = tmp2->next;
+			tmp2 = tmp2->next;
 		}
 	}
 }

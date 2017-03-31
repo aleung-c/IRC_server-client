@@ -22,7 +22,7 @@ t_channel		*get_chan_from_list(t_channel_list *list, char *chan_name)
 	t_channel_list	*tmp;
 
 	tmp = list;
-	if (!chan_name)
+	if (!chan_name || !list)
 		return (NULL);
 	while (tmp)
 	{
@@ -51,7 +51,7 @@ t_channel		*create_new_chan(t_serveur *serv, char *chan_name)
 	new_chan->name[ft_strlen(chan_name)] = '\0';
 	new_chan->connected_clients = NULL;
 	new_chan->nb_clients = 0;
-	add_chan_to_list(&serv->channel_list, new_chan);
+	add_chan_to_list(&(serv->channel_list), new_chan);
 	printf(KCYN "[Server]: Created new channel [%s]\n" KRESET,
 		new_chan->name);
 	return (new_chan);

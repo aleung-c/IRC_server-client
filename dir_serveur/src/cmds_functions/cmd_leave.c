@@ -28,20 +28,9 @@ void		cmd_leave(t_serveur *serv, t_client *client, char *msg,
 		return ;
 	if (get_array_count(lexed_msg) == 1)
 	{
-		printf("[Server]: Leaving all channels\n");
-		send_msg(client, "$SERVMSG::Leaving all channels\n");
+		printf(KCYN "[Server]: Leaving all channels%s\n", KRESET);
+		send_msg(client, "$SERVMSG::Client leaving all channels\n");
 		send_msg(client, "$PROMPT::\n");
-
-		// debug test
-		t_channel_list *chan_list;
-
-		chan_list = client->channels_joined;
-		while (chan_list)
-		{
-			printf("channel to leave: %s\n", chan_list->chan_ptr->name);
-			chan_list = chan_list->next;
-		}
-		//debug test
 		leave_all_chans(client);
 		return ;
 	}
@@ -96,7 +85,7 @@ void	leave_all_chans(t_client *client)
 	{
 		printf("hey2\n");
 		leave_one_chan(client, tmp->chan_ptr);
-		tmp = tmp->next;
+		tmp = client->channels_joined;
 	}
 }
 

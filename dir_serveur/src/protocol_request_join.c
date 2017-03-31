@@ -12,10 +12,6 @@
 
 #include "../includes/serveur.h"
 
-/*
-**	SEGFAULT HERE.
-*/
-
 void	protocol_request_join(t_serveur *serv, t_client *client, char *msg,
 								int proto_msg_delim_pos)
 {
@@ -41,15 +37,18 @@ void	protocol_request_join(t_serveur *serv, t_client *client, char *msg,
 	}
 	else if (!(channel = get_chan_from_list(serv->channel_list, lexed_msg[0])))
 	{
-		// channel str NOT FOUND on serveur.
 		channel = create_new_chan(serv, lexed_msg[0]);
 	}
 	else
 	{
-		// channel str FOUND on serveur.
 		printf(KGRN "[Server]: Client joined existing channel!\n" KRESET);
 	}
-	client_joins_chan(client, &(*channel));
+	if (!channel)
+	{
+		printf("NULLPTR\n");
+		exit (-1);
+	}
+	client_joins_chan(client, channel);
 	send_msg(client, "$PROTOREQ::JOIN::OK::Joined channel [");
 	send_msg(client, channel->name);
 	send_msg(client, "]\n");

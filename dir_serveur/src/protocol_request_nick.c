@@ -31,8 +31,6 @@ void	protocol_request_nick(t_serveur *serv, t_client *client, char *msg,
 	}
 	else
 	{
-		printf("strlen: %d [0] = %c\n", (int)ft_strlen(lexed_msg[0]),
-			(msg + proto_msg_delim_pos)[0]);
 		if ((int)ft_strlen(lexed_msg[0]) > MAX_NICK_LEN)
 		{
 			printf("[Server]: Invalid protocol request: [%s]\n", msg);
