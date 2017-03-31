@@ -64,8 +64,13 @@ int		connect_client(t_client *client)
 
 void	close_connection(t_client *client)
 {
-	if (client->is_connected)
+	if (client->is_connected == 1)
 	{
+		printf(KRED "[Client]: Connection closed."
+				" Reconnect with /connect <machine> <port>%s\n",
+				KRESET);
 		close(client->sock);
+		client->is_connected = 0;
+		put_prompt();
 	}
 }

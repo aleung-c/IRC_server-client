@@ -20,7 +20,8 @@ void	read_user_input(t_client *client)
 	ret = read(STDIN_FILENO, user_input_buffer, MSG_SIZE);
 	user_input_buffer[ret] = '\0';
 	//printf("user wrote: [%s]\n", user_input_buffer);
-	if (client->is_connected == 0)
+	if (ft_strlen(user_input_buffer) > 0
+		&&client->is_connected == 0)
 	{
 		// not connected, read connect cmd;
 		parse_user_connection_cmd(client, user_input_buffer);

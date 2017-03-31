@@ -51,13 +51,13 @@ int		read_socket(t_client *client)
 		recv_buffer[ret] = '\0';
 		write_into_buffer(&client->recv_buffer, recv_buffer, ft_strlen(recv_buffer));
 		//print_reception(recv_buffer, client);
-		if (ft_strlen(recv_buffer) != 0)
-			printf("receiveid: [%s]\n", recv_buffer);
+		if (client->is_authentified == 0 && ft_strlen(recv_buffer) != 0)
+			printf(KYEL "receiveid:%s [%s]\n", KRESET, recv_buffer);
 		return (ret);
 	}
 	else if (client->recv_buffer.is_waiting == 0)
 	{
-		printf(KYEL "[Client]: Buffer full ...\n" KRESET);
+		printf(KCYN "[Client]: Buffer full...\n" KRESET);
 		client->recv_buffer.is_waiting = 1;
 	}
 	return (-1);
@@ -74,7 +74,8 @@ void	write_socket(t_client *client)
 		// there are datas to be sent.
 		to_send = extract_datas_to_send(&client->write_buffer, send_buffer);
 		ret = send(client->sock, send_buffer, to_send, 0);
-		print_sending(send_buffer, to_send);
+		if (client->is_authentified == 0)
+			print_sending(send_buffer, to_send);
 		if (ret == -1)
 		{
 			printf(KRED "send() error.\n" KRESET);

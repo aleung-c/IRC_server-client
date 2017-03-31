@@ -22,6 +22,8 @@ t_channel		*get_chan_from_list(t_channel_list *list, char *chan_name)
 	t_channel_list	*tmp;
 
 	tmp = list;
+	if (!chan_name)
+		return (NULL);
 	while (tmp)
 	{
 		printf("check : [%s] == [%s]\n", chan_name, tmp->chan_ptr->name);

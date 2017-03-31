@@ -23,6 +23,8 @@ void	client_main_loop(t_client *client)
 				client->write_fd_set, NULL, set_select_timeout(&t)) < 0)
 		{
 			printf(KRED "Select() Error.\n" KRESET);
+			perror("select");
+			exit(-1);
 		}
 		check_fd_sets(client);
 	}

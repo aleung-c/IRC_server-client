@@ -242,6 +242,9 @@ int							cmd_join_parse_args(char **lexed_msg,
 								int user_msg_start);
 void						cmd_leave(t_serveur *serv, t_client *client,
 								char *msg, int user_msg_start);
+void						leave_all_chans(t_client *client);
+void						leave_one_chan(t_client *client,
+								t_channel *channel);
 int							cmd_leave_parse_arg(char **lexed_msg,
 								t_client *client, char *msg,
 								int user_msg_start);

@@ -35,6 +35,7 @@ void	process_receiveid_msg(t_client *client)
 			//printf("todo: will parse received msg !\n");
 			parse_regular_msg(client, msg);
 		}
+		free(msg);
 	}
 }
 
