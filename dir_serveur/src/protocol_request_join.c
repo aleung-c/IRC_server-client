@@ -12,6 +12,10 @@
 
 #include "../includes/serveur.h"
 
+/*
+**	SEGFAULT HERE.
+*/
+
 void	protocol_request_join(t_serveur *serv, t_client *client, char *msg,
 								int proto_msg_delim_pos)
 {
@@ -22,10 +26,10 @@ void	protocol_request_join(t_serveur *serv, t_client *client, char *msg,
 	if ((protocol_join_request_parsing(lexed_msg, client, msg,
 			proto_msg_delim_pos)) == -1)
 		return ;
-	if (!(channel = get_chan_from_list(serv->channel_list, lexed_msg[0])))
-		channel = create_new_chan(serv, lexed_msg[0]);
-	else if (get_chan_from_list(client->channels_joined, lexed_msg[0]))
+
+	if ((channel = get_chan_from_list(client->channels_joined, lexed_msg[0])))
 	{
+		// channel str FOUND in client channel list.
 		printf(KMAG "[Server]: Client already in that channel,"
 				"now current.\n" KRESET);
 		send_msg(client, "$PROTOREQ::JOIN::OK::Already joined channel.\n");
@@ -35,14 +39,19 @@ void	protocol_request_join(t_serveur *serv, t_client *client, char *msg,
 		client->current_channel = channel;
 		return ;
 	}
+	else if (!(channel = get_chan_from_list(serv->channel_list, lexed_msg[0])))
+	{
+		// channel str NOT FOUND on serveur.
+		channel = create_new_chan(serv, lexed_msg[0]);
+	}
 	else
+	{
+		// channel str FOUND on serveur.
 		printf(KGRN "[Server]: Client joined existing channel!\n" KRESET);
-	add_client_to_chan(channel, client);
-	add_chan_to_list(&client->channels_joined, channel);
-	client->current_channel = channel;
-	client->nb_chan_joined += 1;
+	}
+	client_joins_chan(client, &(*channel));
 	send_msg(client, "$PROTOREQ::JOIN::OK::Joined channel [");
-	send_msg(client, lexed_msg[0]);
+	send_msg(client, channel->name);
 	send_msg(client, "]\n");
 	if (client->is_authentified == 0)
 	{
@@ -62,7 +71,8 @@ int		protocol_join_request_parsing(char **lexed_msg, t_client *client,
 	{
 		printf("[Server]: Invalid arguments for JOIN request: [%s]\n",
 			msg + proto_msg_delim_pos);
-		send_msg(client, "$PROTOREQ::JOIN::KO::Invalid format for JOIN request protocol.\n");
+		send_msg(client, "$PROTOREQ::JOIN::KO::Invalid format for JOIN"
+			" request protocol.\n");
 		error = -1;
 	}
 	else if (lexed_msg[0] && ft_strlen(lexed_msg[0]) > MAX_CHANNEL_NAME_LEN)

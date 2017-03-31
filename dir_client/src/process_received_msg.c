@@ -60,7 +60,7 @@ void	parse_auth_msg(t_client *client, char *msg)
 			{
 				printf(KMAG "[Client]: Default nick refused,"
 							" select another one :%s\n", KRESET);
-				write(1, "$>", 2);
+				put_prompt();
 				client->default_nick_refused = 1;
 				client->nick_refused = 1;
 				client->nick_sent = 0;
@@ -69,7 +69,7 @@ void	parse_auth_msg(t_client *client, char *msg)
 			{
 				printf(KMAG "[Client]: Selected nick refused,"
 							" select another one :%s\n", KRESET);
-				write(1, "$>", 2);
+				put_prompt();
 				client->nick_refused = 0;
 				client->nick_sent = 0;
 			}

@@ -266,6 +266,8 @@ void						cmd_quit(t_serveur *serv, t_client *client, char *msg,
 /*
 **	Channel Handling
 */
+void						client_joins_chan(t_client *client,
+								t_channel *chan);
 
 t_channel					*get_chan_from_list(t_channel_list *list,
 								char *chan_name);

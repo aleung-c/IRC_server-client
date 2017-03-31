@@ -13,6 +13,21 @@
 #include "../includes/serveur.h"
 
 /*
+**	High level usage function : client > chan.
+*/
+
+void	client_joins_chan(t_client *client, t_channel *chan)
+{
+	add_client_to_chan(chan, client);
+	add_chan_to_list(&client->channels_joined, chan);
+	client->current_channel = chan;
+	client->nb_chan_joined += 1;
+	send_msg(client, "$SERVMSG::Joined channel [");
+	send_msg(client, chan->name);
+	send_msg(client, "]\n");
+}
+
+/*
 **	Stock channel into list of channel
 **	Channel -> CHANNEL_LIST
 **	WARNING: send address of pointer in first arg, or else you will have
@@ -24,7 +39,7 @@ t_channel_list		*add_chan_to_list(t_channel_list **chan_list, t_channel *new_cha
 	t_channel_list		*tmp;
 	t_channel_list		*new_node;
 
-	new_node = (t_channel_list *)malloc(sizeof(t_channel_list));
+	new_node = (t_channel_list *)s_malloc(sizeof(t_channel_list));
 	new_node->next = NULL;
 	new_node->chan_ptr = new_chan;
 	if (!(*chan_list))

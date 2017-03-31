@@ -37,13 +37,7 @@ void		cmd_join(t_serveur *serv, t_client *client, char *msg,
 	}
 	else
 		printf(KGRN "[Server]: Client joined existing channel!\n" KRESET);
-	add_client_to_chan(channel, client);
-	add_chan_to_list(&client->channels_joined, channel);
-	client->current_channel = channel;
-	client->nb_chan_joined += 1;
-	send_msg(client, "$SERVMSG::Joined channel [");
-	send_msg(client, lexed_msg[1]);
-	send_msg(client, "]\n");
+	client_joins_chan(client, channel);
 	free_lexed_array(lexed_msg);
 }
 

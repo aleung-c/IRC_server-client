@@ -22,7 +22,7 @@ void			add_client_to_chan(t_channel *chan, t_client *client)
 	t_client_list	*new_client_node;
 	t_client_list	*tmp;
 
-	new_client_node = (t_client_list *)malloc(sizeof(t_client_list));
+	new_client_node = (t_client_list *)s_malloc(sizeof(t_client_list));
 	new_client_node->client_ptr = client;
 	new_client_node->next = NULL;
 	chan->nb_clients += 1;
