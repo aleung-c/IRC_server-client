@@ -66,6 +66,10 @@ void		new_client_auth_welcome(t_client *client)
 	send_msg(client, "$SERVMSG::/amsg <message> : send a message to all joined channels.\n");
 	send_msg(client, "$SERVMSG::/msg <nick> <message> : send a message to a user.\n");
 	send_msg(client, "$SERVMSG::/quit or /exit : Leave the server and closes the connection.\n\n");
+	send_msg(client, "$SERVMSG::You are in channel ");
+	send_msg(client, client->current_channel->name);
+	send_msg(client, "\n");
+	send_msg(client, "$PROMPT::\n");
 }
 
 /*

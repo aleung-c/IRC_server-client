@@ -108,8 +108,8 @@ void			write_socket(t_client *client);
 void			read_user_input(t_client *client);
 void			parse_user_connection_cmd(t_client *client, char *user_input_buffer);
 void			user_input_error(char **lexed_msg, char *type, char *cmd);
-
 void			parse_user_auth_msg(t_client *client, char *user_input);
+void			parse_user_chat_msg(t_client *client, char *user_input);
 
 /*
 **	receveid msg handling
@@ -117,7 +117,9 @@ void			parse_user_auth_msg(t_client *client, char *user_input);
 
 void			process_receiveid_msg(t_client *client);
 void			parse_auth_msg(t_client *client, char *msg);
+void			parse_regular_msg(t_client *client, char *msg);
 
+void			display_public_msg(t_client *client, char *msg);
 
 /*
 **	Circular buffer usage
@@ -146,6 +148,8 @@ void			print_reception(char *msg);
 void			print_sending(char *msg, int len);
 void			replace_nl(char *str, int len);
 int				get_len_to_delim(char *msg, char c);
+int				len_to_next_proto_arg(char *msg);
+void			put_prompt();
 
 char			**string_lexer(char *msg, char delim);
 int				str_word_count(char *msg, char delim);

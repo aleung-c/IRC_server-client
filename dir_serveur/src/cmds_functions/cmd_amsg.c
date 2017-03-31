@@ -57,11 +57,11 @@ void		cmd_amsg_sending(t_client *client, char *msg)
 		client_tmp = channel_tmp->chan_ptr->connected_clients;
 		while (client_tmp)
 		{
-			send_msg(client_tmp->client_ptr, "$MSG::");
+			send_msg(client_tmp->client_ptr, "$PUBLICMSG::");
 			send_msg(client_tmp->client_ptr, channel_tmp->chan_ptr->name);
 			send_msg(client_tmp->client_ptr, "::");
 			send_msg(client_tmp->client_ptr, client->nickname);
-			send_msg(client_tmp->client_ptr, "::PUBLIC::");
+			send_msg(client_tmp->client_ptr, "::");
 			send_msg(client_tmp->client_ptr, msg);
 			send_msg(client_tmp->client_ptr, "\n");
 			client_tmp = client_tmp->next;

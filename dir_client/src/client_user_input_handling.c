@@ -19,7 +19,7 @@ void	read_user_input(t_client *client)
 
 	ret = read(STDIN_FILENO, user_input_buffer, MSG_SIZE);
 	user_input_buffer[ret] = '\0';
-	printf("user wrote: [%s]\n", user_input_buffer);
+	//printf("user wrote: [%s]\n", user_input_buffer);
 	if (client->is_connected == 0)
 	{
 		// not connected, read connect cmd;
@@ -32,8 +32,7 @@ void	read_user_input(t_client *client)
 	}
 	else 
 	{
-		// parse user_chat_msg()
-		printf("todo: will parse user msg to send\n");
+		parse_user_chat_msg(client, user_input_buffer);
 	}
 }
 
@@ -61,7 +60,9 @@ void	parse_user_connection_cmd(t_client *client, char *user_input_buffer)
 
 		if (connect_client(client) == -1)
 		{
-			printf("[Client]: Connection to server failed\n");
+			printf(KMAG "[Client]: Connection to server failed,"
+						" try again:%s\n", KRESET);
+			put_prompt();
 		}
 		else
 		{
@@ -75,6 +76,7 @@ void	user_input_error(char **lexed_msg, char *type, char *cmd)
 {
 	free_lexed_array(lexed_msg);
 	printf(KMAG "[Client]: Invalid %s for %s%s\n", type, cmd, KRESET);
+	put_prompt();
 }
 
 void	parse_user_auth_msg(t_client *client, char *user_input)
@@ -93,5 +95,19 @@ void	parse_user_auth_msg(t_client *client, char *user_input)
 		send_msg(client, "\n");
 		free_lexed_array(lexed_msg);
 		client->nick_sent = 1;
+	}
+}
+
+void	parse_user_chat_msg(t_client *client, char *user_input)
+{
+	if (ft_strlen(user_input) < MSG_SIZE)
+	{
+		send_msg(client, "$MSG::");
+		send_msg(client, user_input);
+		send_msg(client, "\n");
+	}
+	else
+	{
+		printf(KMAG "[Client]: Chat message too long.%s\n", KRESET);
 	}
 }

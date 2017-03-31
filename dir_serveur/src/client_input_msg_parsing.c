@@ -30,4 +30,9 @@ void	parse_client_user_msg(t_serveur *serv, t_client *client, char *msg,
 			&msg[msg_start]);
 		send_simple_chat_msg(serv, client, msg, msg_start);
 	}
+	else
+	{
+		// empty message.
+		send_msg(client, "$PROMPT::\n");
+	}
 }

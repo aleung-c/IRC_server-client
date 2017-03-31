@@ -61,13 +61,14 @@ void	send_msg_to_chan_users(t_channel *chan, t_client *client_sender,
 		tmp = chan->connected_clients;
 		while (tmp)
 		{
-			send_msg(tmp->client_ptr, "$MSG::");
+			send_msg(tmp->client_ptr, "$PUBLICMSG::");
 			send_msg(tmp->client_ptr, chan->name);
 			send_msg(tmp->client_ptr, "::");
 			send_msg(tmp->client_ptr, client_sender->nickname);
-			send_msg(tmp->client_ptr, "::PUBLIC::");
+			send_msg(tmp->client_ptr, "::");
 			send_msg(tmp->client_ptr, msg);
 			send_msg(tmp->client_ptr, "\n");
+			send_msg(tmp->client_ptr, "$PROMPT::\n");
 			tmp = tmp->next;
 		}
 	}

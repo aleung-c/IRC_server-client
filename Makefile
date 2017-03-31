@@ -58,7 +58,8 @@ dir_client/src/tools_parsing.c \
 dir_client/src/client_user_input_handling.c \
 dir_client/src/client_socket_io.c \
 dir_client/src/client_main_loop.c \
-dir_client/src/process_received_msg.c
+dir_client/src/process_received_msg.c \
+dir_client/src/display_msg.c
 
 OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
 

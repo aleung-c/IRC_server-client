@@ -41,9 +41,9 @@ void		cmd_msg(t_serveur *serv, t_client *client, char *msg,
 		}
 		if ((target_client = get_client_by_nick(serv, lexed_msg[1])))
 		{
-			send_msg(target_client, "$MSG::");
+			send_msg(target_client, "$PRIVATEMSG::");
 			send_msg(target_client, client->nickname);
-			send_msg(target_client, "::PRIVATE::");
+			send_msg(target_client, "::");
 			send_msg(target_client, msg + user_msg_start
 				+ ft_strlen(lexed_msg[0]) + 1
 				+ ft_strlen(lexed_msg[1]) + 1);
