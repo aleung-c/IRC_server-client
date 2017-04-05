@@ -21,7 +21,7 @@ void				serveur_main_loop(t_serveur *serv)
 	int					ret_select;
 	struct timeval		t;
 
-	ft_printfstr( KCYN "- Server Awaiting data -\n" KRESET, NULL);
+	ft_printfstr(KCYN "- Server Awaiting data -\n" KRESET, NULL);
 	while (serv->is_running == 1)
 	{
 		init_fd(serv);
@@ -31,7 +31,7 @@ void				serveur_main_loop(t_serveur *serv)
 		{
 			ft_printfstr(KRED "[Serveur]: Select() error.\n" KRESET, NULL);
 			perror("select() errno");
-			exit (-1);
+			exit(-1);
 		}
 		check_fd_sets(serv);
 	}

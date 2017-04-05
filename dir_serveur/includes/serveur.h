@@ -68,15 +68,14 @@
 
 # define NB_OF_CMDS 9
 
-
 /*
 **	Server irc define
 */
 
 # define MAX_NICK_LEN 9
+# define MAX_NICK_LEN_P1 10
 # define MAX_CHANNEL_NAME_LEN 50
 # define MAX_JOINABLE_CHAN 5
-
 
 /*
 **	Server structs.
@@ -147,6 +146,8 @@ void						remove_client_from_list(t_serveur *serv,
 								t_client *client);
 t_client					*get_client_by_nick(t_serveur *serv, char *nick);
 
+int							nick_has_forbidden_chars(char *nick);
+
 /*
 ** socket_input_output.c
 */
@@ -181,6 +182,10 @@ void						critical_protocol_error(t_client *client);
 void						protocol_request_nick(t_serveur *serv,
 								t_client *client, char *msg,
 								int proto_msg_delim_pos);
+int							proto_req_nick_parsing(char **lexed_msg,
+								t_client *client, char *msg);
+void						exec_nick_proto_request(char **lexed_msg,
+								t_client *client);
 void						protocol_request_join(t_serveur *serv,
 								t_client *client, char *msg,
 								int proto_msg_delim_pos);
@@ -216,8 +221,8 @@ void						send_msg_to_chan_users(t_channel *chan,
 
 void						parse_client_chat_cmd(t_serveur *serv,
 								t_client *client, char *msg, int msg_start);
-void						search_for_cmd(t_serveur *serv, t_client *client, char *msg,
-								int msg_start);
+void						search_for_cmd(t_serveur *serv, t_client *client,
+								char *msg, int msg_start);
 
 /*
 ** circular_buffer.c
@@ -293,6 +298,7 @@ void						cmd_exit(t_serveur *serv, t_client *client,
 /*
 **	Channel Handling
 */
+
 void						client_joins_chan(t_client *client,
 								t_channel *chan);
 
@@ -300,6 +306,8 @@ t_channel					*get_chan_from_list(t_channel_list *list,
 								char *chan_name);
 t_channel					*create_new_chan(t_serveur *serv,
 								char *chan_name);
+void						clear_channel_clients(t_channel *chan);
+int							chan_has_forbidden_chars(char *chan_name);
 
 /*
 **	Channel list Handling

@@ -34,3 +34,19 @@ t_client	*get_client_by_nick(t_serveur *serv, char *nick)
 	}
 	return (NULL);
 }
+
+int			nick_has_forbidden_chars(char *nick)
+{
+	int i;
+
+	i = 0;
+	while (nick[i])
+	{
+		if (ft_isalnum(nick[i]) != 1
+			&& nick[i] != '-'
+			&& nick[i] != '_')
+			return (1);
+		i++;
+	}
+	return (0);
+}

@@ -77,11 +77,8 @@ void	fill_array(char **array, char *msg, char delim, int nb_words)
 			array_count++;
 			i += y;
 		}
-		if (msg[i] && (msg[i] == delim))
-		{
-			while (msg[i] && (msg[i] == delim))
-				i++;
-		}
+		while (msg[i] && (msg[i] == delim))
+			i++;
 	}
 }
 
@@ -93,40 +90,6 @@ int		get_array_count(char **array)
 	while (array[i])
 		i++;
 	return (i);
-}
-
-void	turn_tabs_to_space(char *str)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\t')
-		{
-			str[i] = ' ';
-		}
-		i++;
-	}
-}
-
-/*
-**	Turn the last nl char to zero in a string.
-*/
-
-void	turn_nl_to_zero(char *str)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\n')
-		{
-			str[i] = '\0';
-		}
-		i++;
-	}
 }
 
 void	free_lexed_array(char **array)

@@ -52,5 +52,10 @@ int		cmd_nick_parse_args(char **lexed_msg, t_client *client, char *msg)
 		free_lexed_array(lexed_msg);
 		return (-1);
 	}
+	if (nick_has_forbidden_chars(lexed_msg[1]) == 1)
+	{
+		send_msg(client, "$ERRSERVMSG::Invalid nickname\n$PROMPT::\n");
+		return (-1);
+	}
 	return (0);
 }

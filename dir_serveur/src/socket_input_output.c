@@ -75,6 +75,7 @@ int		read_client_socket(t_serveur *serv, t_client *client)
 					" Buffer waiting for processing...\n" KRESET,
 					client->id, client->sock);
 		client->recv_buffer.is_waiting = 1;
+		client->recv_buffer.data[client->recv_buffer.end] = '\n';
 	}
 	return (-1);
 }
@@ -98,8 +99,8 @@ void	write_client_socket(t_serveur *serv, t_client *client)
 		print_sending(send_buffer, client, to_send);
 		if (ret == -1)
 		{
-			perror("send()");
-			exit (-1);
+			printf(KRED "send() error%s\n", KRESET);
+			exit(-1);
 		}
 	}
 }

@@ -21,7 +21,7 @@ void	protocol_request_join(t_serveur *serv, t_client *client, char *msg,
 	lexed_msg = string_lexer(msg + proto_msg_delim_pos, ' ');
 	if ((protocol_join_request_parsing(lexed_msg, client, msg,
 			proto_msg_delim_pos)) == -1)
-		return ;
+		return (free_lexed_array(lexed_msg));
 	if ((channel = get_chan_from_list(client->channels_joined, lexed_msg[0])))
 		return (rejoin_channel(lexed_msg, client, channel));
 	else if (!(channel = get_chan_from_list(serv->channel_list, lexed_msg[0])))
@@ -55,28 +55,15 @@ void	rejoin_channel(char **lexed_msg, t_client *client, t_channel *channel)
 int		protocol_join_request_parsing(char **lexed_msg, t_client *client,
 								char *msg, int proto_msg_delim_pos)
 {
-	int		error;
-
-	error = 0;
 	if (!lexed_msg || get_array_count(lexed_msg) > 1)
 	{
 		printf("[Server]: Invalid arguments for JOIN request: [%s]\n",
 			msg + proto_msg_delim_pos);
 		send_msg(client, "$PROTOREQ::JOIN::KO::Invalid format for JOIN"
 			" request protocol.\n");
-		error = -1;
+		return (-1);
 	}
-	error = protocol_join_request_parsing_part2(lexed_msg, client, msg,
-		proto_msg_delim_pos);
-	if (lexed_msg && error == -1)
-		free_lexed_array(lexed_msg);
-	return (error);
-}
-
-int		protocol_join_request_parsing_part2(char **lexed_msg, t_client *client,
-								char *msg, int proto_msg_delim_pos)
-{
-	if (lexed_msg[0] && ft_strlen(lexed_msg[0]) > MAX_CHANNEL_NAME_LEN)
+	else if (lexed_msg[0] && ft_strlen(lexed_msg[0]) > MAX_CHANNEL_NAME_LEN)
 	{
 		printf("[Server]: Channel name too long(%d char max): [%s]\n",
 			MAX_CHANNEL_NAME_LEN, msg + proto_msg_delim_pos);
@@ -84,12 +71,33 @@ int		protocol_join_request_parsing_part2(char **lexed_msg, t_client *client,
 						" JOIN request protocol.\n");
 		return (-1);
 	}
-	else if (lexed_msg[0][0] && lexed_msg[0][0] != '#')
+	return (protocol_join_request_parsing_part2(lexed_msg, client, msg,
+		proto_msg_delim_pos));
+}
+
+int		protocol_join_request_parsing_part2(char **lexed_msg, t_client *client,
+								char *msg, int proto_msg_delim_pos)
+{
+	if (lexed_msg[0][0] && lexed_msg[0][0] != '#')
 	{
 		printf("[Server]: Channel name must start: [%s]\n",
 			msg + proto_msg_delim_pos);
 		send_msg(client, "$PROTOREQ::JOIN::KO::Channel name must"
 						" start with '#'\n");
+		return (-1);
+	}
+	else if (ft_strlen(lexed_msg[0]) == 1)
+	{
+		printf("[Server]: Channel name must contain letters: [%s]\n",
+			msg + proto_msg_delim_pos);
+		send_msg(client, "$PROTOREQ::JOIN::KO::Channel name must"
+						" contain letters\n");
+		return (-1);
+	}
+	else if (chan_has_forbidden_chars(lexed_msg[0]) == 1)
+	{
+		send_msg(client, "PROTOREQ::JOIN::KO::Channel name invalid\n"
+			"$PROMPT::\n");
 		return (-1);
 	}
 	return (0);

@@ -10,11 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef SERVEUR_TYPES_H
 # define SERVEUR_TYPES_H
 
 typedef struct s_serveur				t_serveur;
 typedef struct s_client					t_client;
+typedef struct s_client_list			t_client_list;
+typedef struct s_channel				t_channel;
 
 #endif

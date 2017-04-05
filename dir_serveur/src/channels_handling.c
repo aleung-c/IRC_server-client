@@ -26,7 +26,6 @@ t_channel		*get_chan_from_list(t_channel_list *list, char *chan_name)
 		return (NULL);
 	while (tmp)
 	{
-		printf("check : [%s] == [%s]\n", chan_name, tmp->chan_ptr->name);
 		if (ft_strncmp(chan_name, tmp->chan_ptr->name,
 			ft_strlen(tmp->chan_ptr->name)) == 0
 			&& ft_strlen(chan_name) == ft_strlen(tmp->chan_ptr->name))
@@ -81,4 +80,21 @@ void			clear_channel_clients(t_channel *chan)
 		}
 		free(tmp2);
 	}
+}
+
+int				chan_has_forbidden_chars(char *chan_name)
+{
+	int i;
+
+	i = 0;
+	while (chan_name[i])
+	{
+		if (ft_isalnum(chan_name[i]) != 1
+			&& chan_name[i] != '-'
+			&& chan_name[i] != '_'
+			&& chan_name[i] != '#')
+			return (1);
+		i++;
+	}
+	return (0);
 }

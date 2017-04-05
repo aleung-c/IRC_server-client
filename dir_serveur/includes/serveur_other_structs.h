@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef SERVEUR_OTHER_STRUCTS_H
 # define SERVEUR_OTHER_STRUCTS_H
+
+# include "serveur.h"
 
 /*
 ** ----- Used to list client in a channel.
@@ -59,28 +60,8 @@ typedef struct				s_circular_buffer
 }							t_circular_buffer;
 
 /*
-** ----- Client struct
+** ----- sub container for client list (frankly, it was not needed)
 */
-
-typedef struct				s_client
-{
-	int						sock;
-	int						id;
-	char					nickname[MAX_NICK_LEN + 1];
-
-	t_channel				*current_channel;
-	t_channel_list			*channels_joined;
-	int						nb_chan_joined;
-
-	t_circular_buffer		recv_buffer;
-	t_circular_buffer		write_buffer;
-
-	int 					has_nick;
-	int						is_authentified;
-	int						to_be_disconnected;
-
-	struct s_client			*next;
-}							t_client;
 
 typedef struct				s_client_handler
 {

@@ -16,7 +16,6 @@ int		main(int argc, char **argv)
 {
 	t_client	client;
 
-	printf("Hello client\n");
 	init_client_vars(&client);
 	if (input_args_handling(&client, argc, argv) != 0)
 	{
