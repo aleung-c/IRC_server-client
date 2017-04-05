@@ -23,25 +23,15 @@ void		cmd_amsg(t_serveur *serv, t_client *client, char *msg,
 	{
 		printf("[Server]: Missing argument for /amsg : [%s]\n",
 			msg + user_msg_start);
-		send_msg(client, "$ERRSERVMSG::Missing argument for /amsg\n$PROMPT::\n");
+		send_msg(client, "$ERRSERVMSG::Missing argument for /amsg\n"
+						"$PROMPT::\n");
 		if (lexed_msg)
 			free_lexed_array(lexed_msg);
 		return ;
 	}
 	else
 	{
-		if (!client->channels_joined)
-		{
-			printf(KMAG "[Server]: No channel for client #%d: [%.*s...]\n"
-				KRESET, client->id, TEXT_MSG_MAX_LEN / 2, msg + user_msg_start);
-			send_msg(client, "$ERRSERVMSG::No channels to send"
-				" messages, try to /join one!\n$PROMPT::\n");
-		}
-		else
-		{
-			cmd_amsg_sending(client, msg + user_msg_start
-				+ ft_strlen(lexed_msg[0]) + 1);
-		}
+		cmd_amsg_try_exec(lexed_msg, client, msg, user_msg_start);
 		free_lexed_array(lexed_msg);
 	}
 }
@@ -67,5 +57,22 @@ void		cmd_amsg_sending(t_client *client, char *msg)
 			client_tmp = client_tmp->next;
 		}
 		channel_tmp = channel_tmp->next;
+	}
+}
+
+void		cmd_amsg_try_exec(char **lexed_msg, t_client *client,
+							char *msg, int user_msg_start)
+{
+	if (!client->channels_joined)
+	{
+		printf(KMAG "[Server]: No channel for client #%d: [%.*s...]\n"
+			KRESET, client->id, TEXT_MSG_MAX_LEN / 2, msg + user_msg_start);
+		send_msg(client, "$ERRSERVMSG::No channels to send"
+			" messages, try to /join one!\n$PROMPT::\n");
+	}
+	else
+	{
+		cmd_amsg_sending(client, msg + user_msg_start
+			+ ft_strlen(lexed_msg[0]) + 1);
 	}
 }

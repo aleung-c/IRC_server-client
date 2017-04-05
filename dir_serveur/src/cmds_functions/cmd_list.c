@@ -18,15 +18,8 @@ void	cmd_list(t_serveur *serv, t_client *client, char *msg,
 	char	**lexed_msg;
 
 	lexed_msg = string_lexer(msg + user_msg_start, ' ');
-	if (!lexed_msg || get_array_count(lexed_msg) > 1)
+	if (cmd_list_parse(lexed_msg, client, msg + user_msg_start) == -1)
 	{
-		printf("[Server]: Invalid arguments for /list command: [%s]\n"
-					"$PROMPT::\n",
-			msg + user_msg_start);
-		send_msg(client, "$ERRSERVMSG::Invalid arguments for command /list\n");
-		send_msg(client, "$PROMPT::\n");
-		if (lexed_msg)
-			free_lexed_array(lexed_msg);
 		return ;
 	}
 	free_lexed_array(lexed_msg);
@@ -39,9 +32,22 @@ void	cmd_list(t_serveur *serv, t_client *client, char *msg,
 		return ;
 	}
 	else
-	{
 		cmd_list_sending(serv, client);
+}
+
+int		cmd_list_parse(char **lexed_msg, t_client *client, char *msg)
+{
+	if (!lexed_msg || get_array_count(lexed_msg) > 1)
+	{
+		printf("[Server]: Invalid arguments for /list command: [%s]\n"
+					"$PROMPT::\n", msg);
+		send_msg(client, "$ERRSERVMSG::Invalid arguments for command /list\n");
+		send_msg(client, "$PROMPT::\n");
+		if (lexed_msg)
+			free_lexed_array(lexed_msg);
+		return (-1);
 	}
+	return (0);
 }
 
 void	cmd_list_sending(t_serveur *serv, t_client *client)

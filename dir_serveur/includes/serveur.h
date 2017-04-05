@@ -236,6 +236,8 @@ void						send_msg(t_client *client, char *msg);
 void						cmd_nick(t_serveur *serv,
 								t_client *client, char *msg,
 								int user_msg_start);
+int							cmd_nick_parse_args(char **lexed_msg,
+								t_client *client, char *msg);
 void						cmd_join(t_serveur *serv, t_client *client,
 								char *msg, int user_msg_start);
 int							cmd_join_parse_args(char **lexed_msg,
@@ -246,6 +248,7 @@ int							cmd_join_parse_args_part2(char **lexed_msg,
 								char *msg, int user_msg_start);
 void						cmd_leave(t_serveur *serv, t_client *client,
 								char *msg, int user_msg_start);
+void						leave_no_args(t_client *client);
 void						leave_all_chans(t_client *client);
 void						leave_one_chan(t_client *client,
 								t_channel *channel);
@@ -254,18 +257,31 @@ int							cmd_leave_parse_arg(char **lexed_msg,
 								int user_msg_start);
 void						cmd_who(t_serveur *serv, t_client *client,
 								char *msg, int user_msg_start);
+int							cmd_who_parse(char **lexed_msg, t_client *client,
+								char *msg);
 void						cmd_who_send_client_list(t_client *client,
 								t_channel *channel);
 void						cmd_list(t_serveur *serv, t_client *client,
 								char *msg, int user_msg_start);
+int							cmd_list_parse(char **lexed_msg,
+								t_client *client, char *msg);
 void						cmd_list_sending(t_serveur *serv, t_client *client);
 void						cmd_amsg(t_serveur *serv, t_client *client,
 								char *msg, int user_msg_start);
 void						cmd_amsg_sending(t_client *client, char *msg);
+void						cmd_amsg_try_exec(char **lexed_msg,
+								t_client *client, char *msg,
+								int user_msg_start);
 void						cmd_msg(t_serveur *serv, t_client *client,
 								char *msg, int user_msg_start);
+void						cmd_msg_try_exec(t_serveur *serv, char **lexed_msg,
+								t_client *client, char *msg);
+void						cmd_msg_sending(char **lexed_msg, t_client *client,
+								t_client *target_client, char *msg);
 void						cmd_quit(t_serveur *serv, t_client *client,
 								char *msg, int user_msg_start);
+void						cmd_exit(t_serveur *serv, t_client *client, char *msg,
+								int user_msg_start);
 
 /*
 **	Channel Handling

@@ -104,6 +104,15 @@ void	parse_regular_msg(t_client *client, char *msg)
 		{
 			display_error_msg(client, msg);
 		}
+		else if (ft_strncmp(msg, "$SERVWHO::", 9) == 0)
+		{
+			display_who_msg(client, msg);
+		}
+		else if (ft_strncmp(msg, "$EXITMSG::", 9) == 0)
+		{
+			printf(KGRN "[Client]: Exiting program...\n" KRESET);
+			exit (0);
+		}
 		else if (ft_strncmp(msg, "$PROMPT::", 9) == 0)
 		{
 			put_prompt();

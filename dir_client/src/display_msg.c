@@ -57,3 +57,16 @@ void	display_error_msg(t_client *client, char *msg)
 	arg1_pos = len_to_next_proto_arg(msg) + 2;
 	printf(KMAG "[Server error]%s: %s\n", KRESET, msg + arg1_pos);
 }
+
+void	display_who_msg(t_client *client, char *msg)
+{
+	int		arg1_pos;
+	int		arg2_pos;
+
+	(void)client;
+	arg1_pos = len_to_next_proto_arg(msg) + 2;
+	arg2_pos = arg1_pos + len_to_next_proto_arg(msg + arg1_pos) + 2;
+	printf("- Currently on channel [%s%.*s%s]:\n %s%s%s\n",
+		KCYN, arg2_pos - arg1_pos - 2, msg + arg1_pos, KRESET,
+		KYEL, msg + arg2_pos, KRESET);
+}

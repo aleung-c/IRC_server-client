@@ -12,10 +12,6 @@
 
 #include "../../includes/serveur.h"
 
-/*
-**	TODO: Delete players from chans when leaving. etc etc.
-*/
-
 void		cmd_leave(t_serveur *serv, t_client *client, char *msg,
 						int user_msg_start)
 {
@@ -28,11 +24,8 @@ void		cmd_leave(t_serveur *serv, t_client *client, char *msg,
 		return ;
 	if (get_array_count(lexed_msg) == 1)
 	{
-		printf(KCYN "[Server]: Leaving all channels%s\n", KRESET);
-		send_msg(client, "$SERVMSG::Client leaving all channels\n");
-		send_msg(client, "$PROMPT::\n");
-		leave_all_chans(client);
-		return ;
+		leave_no_args(client);
+		return (free_lexed_array(lexed_msg));
 	}
 	if (!(channel = get_chan_from_list(client->channels_joined,
 			lexed_msg[1])))
@@ -41,16 +34,21 @@ void		cmd_leave(t_serveur *serv, t_client *client, char *msg,
 			lexed_msg[1]);
 		send_msg(client, "$ERRSERVMSG::Channel to /leave not found.\n"
 							"$PROMPT::\n");
-		return ;
+		return (free_lexed_array(lexed_msg));
 	}
 	else
-	{
 		leave_one_chan(client, channel);
-	}
 	free_lexed_array(lexed_msg);
 }
 
-int		cmd_leave_parse_arg(char **lexed_msg, t_client *client, char *msg,
+void		leave_no_args(t_client *client)
+{
+	printf(KCYN "[Server]: Leaving all channels%s\n", KRESET);
+	send_msg(client, "$SERVMSG::Client leaving all channels\n$PROMPT::\n");
+	leave_all_chans(client);
+}
+
+int			cmd_leave_parse_arg(char **lexed_msg, t_client *client, char *msg,
 							int user_msg_start)
 {
 	int		error;
@@ -77,7 +75,7 @@ int		cmd_leave_parse_arg(char **lexed_msg, t_client *client, char *msg,
 	return (error);
 }
 
-void	leave_all_chans(t_client *client)
+void		leave_all_chans(t_client *client)
 {
 	t_channel_list	*tmp;
 
@@ -89,7 +87,7 @@ void	leave_all_chans(t_client *client)
 	}
 }
 
-void	leave_one_chan(t_client *client, t_channel *channel)
+void		leave_one_chan(t_client *client, t_channel *channel)
 {
 	remove_chan_from_list(&client->channels_joined, channel);
 	remove_client_from_chan(channel, client);

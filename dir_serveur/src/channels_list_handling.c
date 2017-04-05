@@ -34,7 +34,8 @@ void	client_joins_chan(t_client *client, t_channel *chan)
 **	copy/leaks problems.
 */
 
-t_channel_list		*add_chan_to_list(t_channel_list **chan_list, t_channel *new_chan)
+t_channel_list		*add_chan_to_list(t_channel_list **chan_list,
+										t_channel *new_chan)
 {
 	t_channel_list		*tmp;
 	t_channel_list		*new_node;
@@ -75,10 +76,7 @@ void		remove_chan_from_list(t_channel_list **chan_list, t_channel *chan)
 	if (tmp->chan_ptr == chan)
 	{
 		free(tmp);
-		if (!tmp2)
-			*chan_list = NULL;
-		else
-			*chan_list = tmp2;
+		*chan_list = tmp2;
 		return ;
 	}
 	else

@@ -36,5 +36,5 @@ void	init_cmd_list(t_serveur *serv)
 	serv->chat_cmd_table[7].name = "/quit";
 	serv->chat_cmd_table[7].function = &cmd_quit;
 	serv->chat_cmd_table[8].name = "/exit";
-	serv->chat_cmd_table[8].function = &cmd_quit;
+	serv->chat_cmd_table[8].function = &cmd_exit;
 }

@@ -35,6 +35,7 @@ dir_serveur/src/cmds_functions/cmd_who.c \
 dir_serveur/src/cmds_functions/cmd_amsg.c \
 dir_serveur/src/cmds_functions/cmd_msg.c \
 dir_serveur/src/cmds_functions/cmd_quit.c \
+dir_serveur/src/cmds_functions/cmd_exit.c \
 dir_serveur/src/serveur_main_loop.c
 
 

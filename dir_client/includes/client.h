@@ -126,6 +126,7 @@ void			parse_regular_msg(t_client *client, char *msg);
 void			display_public_msg(t_client *client, char *msg);
 void			display_private_msg(t_client *client, char *msg);
 void			display_error_msg(t_client *client, char *msg);
+void			display_who_msg(t_client *client, char *msg);
 
 /*
 **	Circular buffer usage

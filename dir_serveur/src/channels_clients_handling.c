@@ -54,21 +54,22 @@ void			remove_client_from_chan(t_channel *chan, t_client *client)
 	tmp = chan->connected_clients;
 	if (!tmp)
 		return ;
-	else if (tmp->client_ptr == client)
+	tmp2 = tmp->next;
+	if (tmp->client_ptr == client)
 	{
 		free(tmp);
-		chan->connected_clients = NULL;
+		chan->connected_clients = tmp2;
 		chan->nb_clients -= 1;
 		return ;
 	}
 	else
 	{
-		tmp2 = tmp->next;
 		while (tmp2)
 		{
 			if (tmp2->client_ptr == client)
 			{
 				tmp->next = tmp2->next;
+				free(tmp2);
 				chan->nb_clients -= 1;
 				return ;
 			}

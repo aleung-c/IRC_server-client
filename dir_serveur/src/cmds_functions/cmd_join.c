@@ -75,7 +75,7 @@ int			cmd_join_parse_args_part2(char **lexed_msg,
 {
 	if (lexed_msg[1][0] && lexed_msg[1][0] != '#')
 	{
-		printf("[Server]: Channel name must start: [%s]\n",
+		printf("[Server]: Channel name must start with '#': [%s]\n",
 			msg + user_msg_start);
 		send_msg(client, "$ERRSERVMSG::Channel name must"
 						" start with '#'\n$PROMPT::\n");
@@ -86,7 +86,7 @@ int			cmd_join_parse_args_part2(char **lexed_msg,
 		printf("[Server]: Channel must contain letters: [%s]\n",
 			msg + user_msg_start);
 		send_msg(client, "$ERRSERVMSG::Channel name must"
-						" start with '#'\n$PROMPT::\n");
+						" contain letters\n$PROMPT::\n");
 		return (-1);
 	}
 	return (0);
