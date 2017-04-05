@@ -241,6 +241,9 @@ void						cmd_join(t_serveur *serv, t_client *client,
 int							cmd_join_parse_args(char **lexed_msg,
 								t_client *client, char *msg,
 								int user_msg_start);
+int							cmd_join_parse_args_part2(char **lexed_msg,
+								t_client *client,
+								char *msg, int user_msg_start);
 void						cmd_leave(t_serveur *serv, t_client *client,
 								char *msg, int user_msg_start);
 void						leave_all_chans(t_client *client);
@@ -259,10 +262,10 @@ void						cmd_list_sending(t_serveur *serv, t_client *client);
 void						cmd_amsg(t_serveur *serv, t_client *client,
 								char *msg, int user_msg_start);
 void						cmd_amsg_sending(t_client *client, char *msg);
-void						cmd_msg(t_serveur *serv, t_client *client, char *msg,
-								int user_msg_start);
-void						cmd_quit(t_serveur *serv, t_client *client, char *msg,
-								int user_msg_start);
+void						cmd_msg(t_serveur *serv, t_client *client,
+								char *msg, int user_msg_start);
+void						cmd_quit(t_serveur *serv, t_client *client,
+								char *msg, int user_msg_start);
 
 /*
 **	Channel Handling
@@ -291,7 +294,8 @@ void						remove_chan_from_list(t_channel_list **chan_list,
 
 void						add_client_to_chan(t_channel *chan,
 								t_client *client);
-void						remove_client_from_chan(t_channel *chan, t_client *client);
+void						remove_client_from_chan(t_channel *chan,
+								t_client *client);
 
 /*
 ** tools.c
@@ -306,7 +310,8 @@ int							get_len_to_delim(char *msg, char c);
 
 char						**string_lexer(char *msg, char delim);
 int							str_word_count(char *msg, char delim);
-void						fill_array(char **array, char *msg, char delim, int nb_words);
+void						fill_array(char **array, char *msg,
+								char delim, int nb_words);
 int							get_array_count(char **array);
 void						turn_tabs_to_space(char *str);
 void						turn_nl_to_zero(char *str);

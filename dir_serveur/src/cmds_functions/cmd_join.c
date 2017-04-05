@@ -51,24 +51,43 @@ int			cmd_join_parse_args(char **lexed_msg, t_client *client,
 	{
 		printf("[Server]: Invalid arguments for join command: [%s]\n",
 			msg + user_msg_start);
-		send_msg(client, "$ERRSERVMSG::Invalid arguments for /join\n$PROMPT::\n");
+		send_msg(client, "$ERRSERVMSG::Invalid arguments for"
+						" /join\n$PROMPT::\n");
 		error = -1;
 	}
 	else if (lexed_msg[1] && ft_strlen(lexed_msg[1]) > MAX_CHANNEL_NAME_LEN)
 	{
-		printf("[Server]: Channel name too long(%d char max): [%s]\n",
-			MAX_CHANNEL_NAME_LEN, msg + user_msg_start);
-		send_msg(client, "$ERRSERVMSG::Channel name too long for /join\n$PROMPT::\n");
-		error = -1;
-	}
-	else if (lexed_msg[1][0] && lexed_msg[1][0] != '#')
-	{
-		printf("[Server]: Channel name must start: [%s]\n",
+		printf("[Server]: Channel name too long(%d char max): [%.*s...]\n",
+			MAX_CHANNEL_NAME_LEN, MAX_CHANNEL_NAME_LEN / 2,
 			msg + user_msg_start);
-		send_msg(client, "$ERRSERVMSG::Channel name must start with '#'\n$PROMPT::\n");
+		send_msg(client, "$ERRSERVMSG::Channel name too"
+						" long for /join\n$PROMPT::\n");
 		error = -1;
 	}
+	error = cmd_join_parse_args_part2(lexed_msg, client, msg, user_msg_start);
 	if (lexed_msg && error == -1)
 		free_lexed_array(lexed_msg);
 	return (error);
+}
+
+int			cmd_join_parse_args_part2(char **lexed_msg,
+					t_client *client, char *msg, int user_msg_start)
+{
+	if (lexed_msg[1][0] && lexed_msg[1][0] != '#')
+	{
+		printf("[Server]: Channel name must start: [%s]\n",
+			msg + user_msg_start);
+		send_msg(client, "$ERRSERVMSG::Channel name must"
+						" start with '#'\n$PROMPT::\n");
+		return (-1);
+	}
+	else if (ft_strlen(lexed_msg[1]) == 1)
+	{
+		printf("[Server]: Channel must contain letters: [%s]\n",
+			msg + user_msg_start);
+		send_msg(client, "$ERRSERVMSG::Channel name must"
+						" start with '#'\n$PROMPT::\n");
+		return (-1);
+	}
+	return (0);
 }

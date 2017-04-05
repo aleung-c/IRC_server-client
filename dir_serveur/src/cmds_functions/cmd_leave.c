@@ -92,7 +92,6 @@ void	leave_all_chans(t_client *client)
 void	leave_one_chan(t_client *client, t_channel *channel)
 {
 	remove_chan_from_list(&client->channels_joined, channel);
-
 	remove_client_from_chan(channel, client);
 	client->nb_chan_joined -= 1;
 	send_msg(client, "$SERVMSG::left channel [");

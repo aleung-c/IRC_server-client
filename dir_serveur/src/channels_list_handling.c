@@ -24,7 +24,7 @@ void	client_joins_chan(t_client *client, t_channel *chan)
 	client->nb_chan_joined += 1;
 	send_msg(client, "$SERVMSG::Joined channel [");
 	send_msg(client, chan->name);
-	send_msg(client, "]\n");
+	send_msg(client, "]\n$PROMPT::\n");
 }
 
 /*
@@ -44,7 +44,6 @@ t_channel_list		*add_chan_to_list(t_channel_list **chan_list, t_channel *new_cha
 	new_node->chan_ptr = new_chan;
 	if (!(*chan_list))
 	{
-		printf(KBLU "New node added\n" KRESET);
 		*chan_list = new_node;
 		return (new_node);
 	}
