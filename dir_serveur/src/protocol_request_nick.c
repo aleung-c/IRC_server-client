@@ -17,7 +17,6 @@ void	protocol_request_nick(t_serveur *serv, t_client *client, char *msg,
 {
 	char	**lexed_msg;
 
-	(void)serv;
 	lexed_msg = string_lexer(msg + proto_msg_delim_pos, ' ');
 	if (!lexed_msg || get_array_count(lexed_msg) > 1)
 	{

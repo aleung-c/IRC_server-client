@@ -16,7 +16,7 @@
 **	High level usage function : client > chan.
 */
 
-void	client_joins_chan(t_client *client, t_channel *chan)
+void				client_joins_chan(t_client *client, t_channel *chan)
 {
 	add_client_to_chan(chan, client);
 	add_chan_to_list(&(client->channels_joined), chan);
@@ -64,7 +64,8 @@ t_channel_list		*add_chan_to_list(t_channel_list **chan_list,
 **	copy/leaks problems.
 */
 
-void		remove_chan_from_list(t_channel_list **chan_list, t_channel *chan)
+void				remove_chan_from_list(t_channel_list **chan_list,
+						t_channel *chan)
 {
 	t_channel_list		*tmp;
 	t_channel_list		*tmp2;
@@ -81,17 +82,23 @@ void		remove_chan_from_list(t_channel_list **chan_list, t_channel *chan)
 	}
 	else
 	{
-		while (tmp2)
-		{
-			if (tmp2->chan_ptr == chan)
-			{
-				tmp->next = tmp2->next;
-				free(tmp2);
-				return ;
-			}
-			tmp = tmp2;
-			tmp2 = tmp2->next;
-		}
-		printf(KRED "Error: channel not found\n" KRESET);
+		run_through_chans(chan, tmp, tmp2);
 	}
+}
+
+void				run_through_chans(t_channel *chan, t_channel_list *tmp,
+							t_channel_list *tmp2)
+{
+	while (tmp2)
+	{
+		if (tmp2->chan_ptr == chan)
+		{
+			tmp->next = tmp2->next;
+			free(tmp2);
+			return ;
+		}
+		tmp = tmp2;
+		tmp2 = tmp2->next;
+	}
+	printf(KRED "Error: channel not found\n" KRESET);
 }

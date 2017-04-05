@@ -64,18 +64,24 @@ void			remove_client_from_chan(t_channel *chan, t_client *client)
 	}
 	else
 	{
-		while (tmp2)
+		run_through_chan_clients(chan, client, tmp, tmp2);
+	}
+}
+
+void			run_through_chan_clients(t_channel *chan, t_client *client,
+						t_client_list *tmp, t_client_list *tmp2)
+{
+	while (tmp2)
+	{
+		if (tmp2->client_ptr == client)
 		{
-			if (tmp2->client_ptr == client)
-			{
-				tmp->next = tmp2->next;
-				free(tmp2);
-				chan->nb_clients -= 1;
-				return ;
-			}
-			tmp = tmp2;
-			if (tmp2)
-				tmp2 = tmp2->next;
+			tmp->next = tmp2->next;
+			free(tmp2);
+			chan->nb_clients -= 1;
+			return ;
 		}
+		tmp = tmp2;
+		if (tmp2)
+			tmp2 = tmp2->next;
 	}
 }

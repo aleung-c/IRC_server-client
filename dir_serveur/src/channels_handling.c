@@ -71,7 +71,7 @@ void			clear_channel_clients(t_channel *chan)
 		free(chan->connected_clients);
 	}
 	else if (chan->nb_clients > 1)
-	{ 
+	{
 		tmp = chan->connected_clients;
 		tmp2 = tmp->next;
 		while (tmp2->next)

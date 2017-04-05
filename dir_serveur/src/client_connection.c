@@ -17,7 +17,7 @@
 **	-> meaning new client is connected, and its socket will be stocked.
 */
 
-void			new_client_connection(t_serveur *serv)
+void		new_client_connection(t_serveur *serv)
 {
 	int					c_sock;
 	t_client			*client;
@@ -36,50 +36,12 @@ void			new_client_connection(t_serveur *serv)
 	new_client_auth_request(client);
 }
 
-void		new_client_auth_request(t_client *client)
-{
-	send_msg(client, "$SERVMSG::--- Connected to aleung-c's IRC SERVER ---\n");
-	send_msg(client, "$SERVMSG::\n");
-	send_msg(client, "$SERVMSG::----- Please authenticate with:\n");
-	send_msg(client, "$SERVMSG::----- $NICK::aleung-c\n");
-	send_msg(client, "$PROTOREQ::ASK::NICK::----- $NICK::aleung-c\n");
-	send_msg(client, "$SERVMSG::----- $JOIN::#default\n\n");
-}
-
-void		new_client_auth_welcome(t_client *client)
-{
-	send_msg(client, "$SERVMSG::    _   _    ___ _   _ _  _  ___      ___  \n");
-	send_msg(client, "$SERVMSG::   /_\\ | |  | __| | | | \\| |/ __|___ / __| \n");
-	send_msg(client, "$SERVMSG::  / _ \\| |__| _|| |_| | .` | (_ |___| (__  \n");
-	send_msg(client, "$SERVMSG:: /_/_\\_\\____|___|\\___/|_|\\_|\\___|____\\___| \n");
-	send_msg(client, "$SERVMSG:: |_ _| _ \\/ __| / __| __| _ \\ \\ / / __| _ \\\n");
-	send_msg(client, "$SERVMSG::  | ||   / (__  \\__ \\ _||   /\\ V /| _||   /\n");
-	send_msg(client, "$SERVMSG:: |___|_|_\\___| |___/___|_|_\\ \\_/ |___|_|_\\\n");
-	send_msg(client, "$SERVMSG::                                           \n");
-	send_msg(client, "$SERVMSG::###################################\n");
-	send_msg(client, "$SERVMSG:: Welcome to aleung-c's irc server!\n");
-	send_msg(client, "$SERVMSG::###################################\n\n");
-	send_msg(client, "$SERVMSG::Command list:\n");
-	send_msg(client, "$SERVMSG::/nick <nickname> : change your default nick.\n");
-	send_msg(client, "$SERVMSG::/join <#chan> : join a channel.\n");
-	send_msg(client, "$SERVMSG::/leave <#chan> : leave a channel.\n");
-	send_msg(client, "$SERVMSG::/list : display list of server's channels.\n");
-	send_msg(client, "$SERVMSG::/who : get list of connected users on your channels.\n");
-	send_msg(client, "$SERVMSG::/amsg <message> : send a message to all joined channels.\n");
-	send_msg(client, "$SERVMSG::/msg <nick> <message> : send a message to a user.\n");
-	send_msg(client, "$SERVMSG::/quit or /exit : Leave the server and closes the connection.\n\n");
-	send_msg(client, "$SERVMSG::You are in channel ");
-	send_msg(client, client->current_channel->name);
-	send_msg(client, "\n");
-	send_msg(client, "$PROMPT::\n");
-}
-
 /*
 **	Small function to accept the connection detected on the
 **	serveur's sock. Protected in case of error.
 */
 
-int				accept_connection(t_serveur *serv)
+int			accept_connection(t_serveur *serv)
 {
 	int						c_sock;
 	struct sockaddr_in		c_sin;
@@ -98,7 +60,7 @@ int				accept_connection(t_serveur *serv)
 **	TODO: most leaks here.
 */
 
-void	client_disconnect(t_serveur *serv, t_client *client)
+void		client_disconnect(t_serveur *serv, t_client *client)
 {
 	printf(KYEL "[Serveur]:%s client #%d (sock %d) disconnected.\n",
 		KRESET, client->id, client->sock);
@@ -107,7 +69,7 @@ void	client_disconnect(t_serveur *serv, t_client *client)
 	remove_client_from_list(serv, client);
 }
 
-void	clear_client_variables(t_client *client)
+void		clear_client_variables(t_client *client)
 {
 	t_channel_list	*tmp;
 	t_channel_list	*to_free;

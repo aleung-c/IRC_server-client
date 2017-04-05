@@ -21,9 +21,7 @@
 void	parse_client_chat_cmd(t_serveur *serv, t_client *client, char *msg,
 								int msg_start)
 {
-	int				i;
 	size_t			cmd_len;
-	t_chat_cmd		*chat_cmd;
 
 	turn_tabs_to_space(msg + msg_start);
 	cmd_len = get_len_to_delim(msg + msg_start, ' ');
@@ -34,8 +32,19 @@ void	parse_client_chat_cmd(t_serveur *serv, t_client *client, char *msg,
 		send_msg(client, "$ERRSERVMSG::Chat command too long.\n$PROMPT::\n");
 		return ;
 	}
+	search_for_cmd(serv, client, msg, msg_start);
+}
+
+void	search_for_cmd(t_serveur *serv, t_client *client, char *msg,
+								int msg_start)
+{
+	int				i;
+	t_chat_cmd		*chat_cmd;
+	size_t			cmd_len;
+
 	i = 0;
 	chat_cmd = serv->chat_cmd_table;
+	cmd_len = get_len_to_delim(msg + msg_start, ' ');
 	while (i < NB_OF_CMDS)
 	{
 		if (ft_strncmp(msg + msg_start, chat_cmd[i].name,

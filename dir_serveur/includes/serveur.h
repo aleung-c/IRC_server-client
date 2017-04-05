@@ -130,7 +130,7 @@ int							accept_connection(t_serveur *serv);
 void						new_client_connection(t_serveur *serv);
 void						new_client_auth_request(t_client *client);
 void						new_client_auth_welcome(t_client *client);
-
+void						new_client_auth_welcome_2(t_client *client);
 /*
 ** client_handling.c
 */
@@ -184,9 +184,14 @@ void						protocol_request_nick(t_serveur *serv,
 void						protocol_request_join(t_serveur *serv,
 								t_client *client, char *msg,
 								int proto_msg_delim_pos);
+void						rejoin_channel(char **lexed_msg,
+								t_client *client, t_channel *channel);
 int							protocol_join_request_parsing(char **lexed_msg,
 								t_client *client, char *msg,
 								int proto_msg_delim_pos);
+int							protocol_join_request_parsing_part2(
+								char **lexed_msg, t_client *client,
+								char *msg, int proto_msg_delim_pos);
 
 /*
 ** client_input_msg_parsing.c
@@ -211,6 +216,8 @@ void						send_msg_to_chan_users(t_channel *chan,
 
 void						parse_client_chat_cmd(t_serveur *serv,
 								t_client *client, char *msg, int msg_start);
+void						search_for_cmd(t_serveur *serv, t_client *client, char *msg,
+								int msg_start);
 
 /*
 ** circular_buffer.c
@@ -280,8 +287,8 @@ void						cmd_msg_sending(char **lexed_msg, t_client *client,
 								t_client *target_client, char *msg);
 void						cmd_quit(t_serveur *serv, t_client *client,
 								char *msg, int user_msg_start);
-void						cmd_exit(t_serveur *serv, t_client *client, char *msg,
-								int user_msg_start);
+void						cmd_exit(t_serveur *serv, t_client *client,
+								char *msg, int user_msg_start);
 
 /*
 **	Channel Handling
@@ -302,7 +309,8 @@ t_channel_list				*add_chan_to_list(t_channel_list **chan_list,
 								t_channel *new_chan);
 void						remove_chan_from_list(t_channel_list **chan_list,
 								t_channel *chan);
-
+void						run_through_chans(t_channel *chan,
+								t_channel_list *tmp, t_channel_list *tmp2);
 
 /*
 **	Channel client Handling
@@ -312,6 +320,9 @@ void						add_client_to_chan(t_channel *chan,
 								t_client *client);
 void						remove_client_from_chan(t_channel *chan,
 								t_client *client);
+void						run_through_chan_clients(t_channel *chan,
+								t_client *client, t_client_list *tmp,
+								t_client_list *tmp2);
 
 /*
 ** tools.c

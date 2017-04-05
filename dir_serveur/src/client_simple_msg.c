@@ -15,7 +15,7 @@
 /*
 **	If a client send $MSG:: and not '/' is following, I consider that
 **	this is a simple msg to be sent to the current channel.
-**	See /amsg to send to all channels. 
+**	See /amsg to send to all channels.
 */
 
 void	send_simple_chat_msg(t_serveur *serv, t_client *client, char *msg,

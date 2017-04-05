@@ -36,9 +36,8 @@ void	process_clients_inputs(t_serveur *serv)
 		else if (client_i->recv_buffer.is_waiting == 1)
 		{
 			printf(KYEL "[Client #%d sock %d]: sent msg too long"
-						" -> cutting msg\n" KRESET,
-				client_i->id, client_i->sock);
-				client_i->recv_buffer.is_waiting = 0;
+				" -> cutting msg\n" KRESET, client_i->id, client_i->sock);
+			client_i->recv_buffer.is_waiting = 0;
 			clear_circular_buffer(&client_i->recv_buffer);
 		}
 		client_i = client_i->next;

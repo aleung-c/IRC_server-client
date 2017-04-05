@@ -12,8 +12,6 @@
 
 #include "../includes/serveur.h"
 
-
-
 /*
 **	This function extracts the current string from the buffer.
 **	It does modify the buffer, and take everything up to
@@ -23,12 +21,12 @@
 char	*extract_buffer_str(t_circular_buffer *buffer)
 {
 	char	*str;
-	int 	i;
+	int		i;
 
 	i = 0;
 	str = (char *)s_malloc(buffer->len * sizeof(char) + 1);
 	str[buffer->len] = '\0';
-	while (i != buffer->len)		
+	while (i != buffer->len)
 	{
 		str[i] = buffer->data[(buffer->start + i) % BUFFER_SIZE];
 		i++;
@@ -46,7 +44,7 @@ char	*extract_buffer_str(t_circular_buffer *buffer)
 char	*get_buffer_delimstr(t_circular_buffer *buffer, int delim_count)
 {
 	char	*str;
-	int 	i;
+	int		i;
 
 	i = 0;
 	str = (char *)s_malloc(delim_count * sizeof(char) + 1);
@@ -72,7 +70,7 @@ int		search_buffer_delim(t_circular_buffer *buffer)
 	int i;
 
 	i = 0;
-	while (i != buffer->len)		
+	while (i != buffer->len)
 	{
 		if (buffer->data[(buffer->start + i) % BUFFER_SIZE] == MSG_DELIM)
 		{

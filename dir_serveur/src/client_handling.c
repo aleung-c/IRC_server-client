@@ -33,7 +33,7 @@ t_client	*create_new_client(t_serveur *serv, int c_sock)
 **	We set that new client base values.
 */
 
-void	set_new_client(t_serveur *serv, t_client *new_client)
+void		set_new_client(t_serveur *serv, t_client *new_client)
 {
 	new_client->id = serv->client_handler.nb_clients;
 	ft_memset(new_client->nickname, 0, 10);
@@ -75,7 +75,7 @@ void		add_client_to_list(t_serveur *serv, t_client *new_client)
 **	see remove_client_from_chan() for the channel equivalent.
 */
 
-void	remove_client_from_list(t_serveur *serv, t_client *client)
+void		remove_client_from_list(t_serveur *serv, t_client *client)
 {
 	t_client	*current;
 	t_client	*prev;

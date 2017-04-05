@@ -66,12 +66,12 @@ void	clear_circular_buffer(t_circular_buffer *buffer)
 char	*get_buffer_str(t_circular_buffer *buffer)
 {
 	char	*str;
-	int 	i;
+	int		i;
 
 	i = 0;
 	str = (char *)s_malloc(buffer->len * sizeof(char) + 1);
 	str[buffer->len] = '\0';
-	while (i != buffer->len)		
+	while (i != buffer->len)
 	{
 		str[i] = buffer->data[(buffer->start + i) % BUFFER_SIZE];
 		i++;

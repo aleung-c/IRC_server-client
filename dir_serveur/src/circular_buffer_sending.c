@@ -13,7 +13,7 @@
 #include "../includes/serveur.h"
 
 /*
-**	High level function: will fill the buffer with size check and stuff 
+**	High level function: will fill the buffer with size check and stuff
 **	to be sent at the next select loop turn.
 */
 
@@ -32,6 +32,7 @@ void	send_msg(t_client *client, char *msg)
 /*
 **	Put the datas from the buffer into the static tmp buffer for sending.
 */
+
 int		extract_datas_to_send(t_circular_buffer *buffer, char *send_buffer)
 {
 	int		i;

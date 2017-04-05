@@ -21,33 +21,16 @@ void	parse_client_protocol_msg(t_serveur *serv, t_client *client, char *msg)
 {
 	int		proto_msg_end_pos;
 
-	(void)serv;
 	if ((proto_msg_end_pos = get_protocol_msg_end_pos(msg)) != -1)
 	{
 		if (ft_strncmp(msg, "$MSG::", proto_msg_end_pos) == 0)
-		{
-			if (client->is_authentified == 1)
-			{
-				printf(KGRN "[Server]: MSG received will be treated.\n" KRESET);
-				parse_client_user_msg(serv, client, msg, proto_msg_end_pos);
-			}
-			else
-				protocol_auth_errmsg(client);
-		}
+			parse_client_user_msg(serv, client, msg, proto_msg_end_pos);
 		else if (ft_strncmp(msg, "$NICK::", proto_msg_end_pos) == 0)
-		{
-			printf(KGRN "[Server]: NICK PROTOCOL request received will"
-						" be treated.\n" KRESET);
 			protocol_request_nick(serv, client, msg, proto_msg_end_pos + 1);
-		}
 		else if (ft_strncmp(msg, "$JOIN::", proto_msg_end_pos) == 0)
 		{
-			printf(KGRN "[Server]: JOIN PROTOCOL request received will"
-						" be treated.\n" KRESET);
 			if (client->has_nick == 0)
 			{
-				printf(KMAG "[Server]: Client needs a nickname before"
-							" joining.%s\n", KRESET);
 				send_msg(client, "ERRSERVMSG::Client needs a $NICK:: first!");
 				return ;
 			}

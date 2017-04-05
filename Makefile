@@ -11,6 +11,7 @@ dir_serveur/src/tools_parsing.c \
 dir_serveur/src/serveur_init.c \
 dir_serveur/src/serveur_init_cmds.c \
 dir_serveur/src/client_connection.c \
+dir_serveur/src/client_connection_msg.c \
 dir_serveur/src/client_handling.c \
 dir_serveur/src/client_nick_handling.c \
 dir_serveur/src/client_input_handling.c \
