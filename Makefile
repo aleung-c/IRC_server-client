@@ -82,15 +82,13 @@ all : Lib $(NAME_SERVEUR) $(NAME_CLIENT)
 ifeq ($(wildcard $(LIB_BIN)),) 
 $(NAME_SERVEUR) : Lib $(OBJ_SERVEUR)
 	$(CC) -o $(NAME_SERVEUR) $(OBJ_SERVEUR) -L./libft/ -lft
-else 
-$(NAME_SERVEUR) : $(OBJ_SERVEUR)
-	$(CC) -o $(NAME_SERVEUR) $(OBJ_SERVEUR) -L./libft/ -lft
-endif 
 
-ifeq ($(wildcard $(LIB_BIN)),) 
 $(NAME_CLIENT) : Lib $(OBJ_CLIENT)
 	$(CC) -o $(NAME_CLIENT) $(OBJ_CLIENT) -L./libft/ -lft
 else 
+$(NAME_SERVEUR) : $(OBJ_SERVEUR)
+	$(CC) -o $(NAME_SERVEUR) $(OBJ_SERVEUR) -L./libft/ -lft
+
 $(NAME_CLIENT) : $(OBJ_CLIENT)
 	$(CC) -o $(NAME_CLIENT) $(OBJ_CLIENT) -L./libft/ -lft
 endif 
