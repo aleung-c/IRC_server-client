@@ -69,6 +69,7 @@ OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
 
 # ------ LIB
 DIR_LIB = ./libft/
+LIB_BIN = ./libft/libft.a
 
 # ----- Compilation command
 
@@ -78,11 +79,21 @@ CC = gcc -g -Wall -Werror -Wextra
 
 all : Lib $(NAME_SERVEUR) $(NAME_CLIENT)
 
+ifeq ($(wildcard $(LIB_BIN)),) 
 $(NAME_SERVEUR) : Lib $(OBJ_SERVEUR)
 	$(CC) -o $(NAME_SERVEUR) $(OBJ_SERVEUR) -L./libft/ -lft
+else 
+$(NAME_SERVEUR) : $(OBJ_SERVEUR)
+	$(CC) -o $(NAME_SERVEUR) $(OBJ_SERVEUR) -L./libft/ -lft
+endif 
 
+ifeq ($(wildcard $(LIB_BIN)),) 
 $(NAME_CLIENT) : Lib $(OBJ_CLIENT)
 	$(CC) -o $(NAME_CLIENT) $(OBJ_CLIENT) -L./libft/ -lft
+else 
+$(NAME_CLIENT) : $(OBJ_CLIENT)
+	$(CC) -o $(NAME_CLIENT) $(OBJ_CLIENT) -L./libft/ -lft
+endif 
 
 Lib : 
 	make -C $(DIR_LIB)
