@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef CLIENT_OTHER_STRUCTS_H
 # define CLIENT_OTHER_STRUCTS_H
 

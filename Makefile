@@ -57,6 +57,7 @@ dir_client/src/circular_buffer_extraction.c \
 dir_client/src/client_connection.c \
 dir_client/src/client_init.c \
 dir_client/src/tools.c \
+dir_client/src/tools_2.c \
 dir_client/src/tools_parsing.c \
 dir_client/src/client_user_input_handling.c \
 dir_client/src/client_socket_io.c \
@@ -77,10 +78,10 @@ CC = gcc -g -Wall -Werror -Wextra
 
 all : Lib $(NAME_SERVEUR) $(NAME_CLIENT)
 
-$(NAME_SERVEUR) : $(OBJ_SERVEUR)
+$(NAME_SERVEUR) : Lib $(OBJ_SERVEUR)
 	$(CC) -o $(NAME_SERVEUR) $(OBJ_SERVEUR) -L./libft/ -lft
 
-$(NAME_CLIENT) : $(OBJ_CLIENT)
+$(NAME_CLIENT) : Lib $(OBJ_CLIENT)
 	$(CC) -o $(NAME_CLIENT) $(OBJ_CLIENT) -L./libft/ -lft
 
 Lib : 

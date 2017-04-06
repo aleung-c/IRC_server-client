@@ -30,7 +30,6 @@ void				serveur_main_loop(t_serveur *serv)
 		if (ret_select < 0)
 		{
 			ft_printfstr(KRED "[Serveur]: Select() error.\n" KRESET, NULL);
-			perror("select() errno");
 			exit(-1);
 		}
 		check_fd_sets(serv);

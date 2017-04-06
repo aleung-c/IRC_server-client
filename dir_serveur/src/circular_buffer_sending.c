@@ -19,9 +19,9 @@
 
 void	send_msg(t_client *client, char *msg)
 {
-	if ((get_buffer_space(&client->write_buffer) - (int)strlen(msg)) >= 0)
+	if ((get_buffer_space(&client->write_buffer) - (int)ft_strlen(msg)) >= 0)
 	{
-		write_into_buffer(&client->write_buffer, msg, strlen(msg));
+		write_into_buffer(&client->write_buffer, msg, ft_strlen(msg));
 	}
 	else
 	{

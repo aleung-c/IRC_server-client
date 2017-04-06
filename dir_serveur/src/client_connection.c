@@ -33,6 +33,14 @@ void		new_client_connection(t_serveur *serv)
 	client = create_new_client(serv, c_sock);
 	ft_printfstr(KGRN "\nNew client connected, sock: %d\n" KRESET,
 		&(client->sock));
+	if (serv->client_handler.nb_clients > MAX_CLIENTS)
+	{
+		printf(KRED "[Serveur]: Client connection refused,"
+			" too many connected already.%s\n", KRESET);
+		send_msg(client, "$ERRSERVMSG::Too many clients on server\n");
+		client->to_be_disconnected = 1;
+		return ;
+	}
 	new_client_auth_request(client);
 }
 

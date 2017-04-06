@@ -45,7 +45,7 @@ int		init_serveur_connection(t_serveur *serv)
 		return (init_error("setsockopt()"));
 	if (bind(sock, (struct sockaddr *)&sin, sizeof(sin)) < 0)
 		return (init_error("bind()"));
-	if (listen(sock, LISTEN_MAX_CLIENTS) < 0)
+	if (listen(sock, MAX_CLIENTS) < 0)
 		return (init_error("listen()"));
 	printf(KGRN "- Serveur connection init OK -\n" KRESET);
 	serv->serveur_sock = sock;
@@ -54,7 +54,7 @@ int		init_serveur_connection(t_serveur *serv)
 
 int		init_error(char *error_source)
 {
-	perror(error_source);
+	printf(KRED "[Serveur]: %s error.\n" KRESET, error_source);
 	return (-1);
 }
 

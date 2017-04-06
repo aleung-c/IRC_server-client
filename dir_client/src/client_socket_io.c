@@ -73,7 +73,7 @@ void	write_socket(t_client *client)
 		if (ret == -1)
 		{
 			printf(KRED "send() error.\n" KRESET);
-			exit (-1);
+			exit(-1);
 		}
 	}
 }

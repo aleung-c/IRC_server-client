@@ -95,7 +95,10 @@ void		remove_client_from_list(t_serveur *serv, t_client *client)
 		current = current->next;
 	}
 	if (!current || current != client)
-		return (perror("remove_client(): client not found"));
+	{
+		printf("remove_client(): client not found\n");
+		return ;
+	}
 	prev->next = client->next;
 	free(client);
 	serv->client_handler.nb_clients -= 1;

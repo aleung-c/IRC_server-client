@@ -19,22 +19,23 @@ void	read_user_input(t_client *client)
 
 	ret = read(STDIN_FILENO, user_input_buffer, MSG_SIZE);
 	user_input_buffer[ret] = '\0';
-	if (ft_strlen(user_input_buffer) > 0
-		&&client->is_connected == 0)
+	if (ft_strlen(user_input_buffer) > 0)
 	{
-		parse_user_connection_cmd(client, user_input_buffer);
-	}
-	else if (client->is_connected == 1
-		&& client->is_authentified == 0)
-	{
-		parse_user_auth_msg(client, user_input_buffer);
-	}
-	else
-	{
-		parse_user_chat_msg(client, user_input_buffer);
+		if (client->is_connected == 0)
+		{
+			parse_user_connection_cmd(client, user_input_buffer);
+		}
+		else if (client->is_connected == 1
+			&& client->is_authentified == 0)
+		{
+			parse_user_auth_msg(client, user_input_buffer);
+		}
+		else
+		{
+			parse_user_chat_msg(client, user_input_buffer);
+		}
 	}
 }
-
 
 void	parse_user_connection_cmd(t_client *client, char *user_input_buffer)
 {

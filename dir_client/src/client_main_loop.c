@@ -12,7 +12,7 @@
 
 #include "../includes/client.h"
 
-void	client_main_loop(t_client *client)
+void				client_main_loop(t_client *client)
 {
 	struct timeval		t;
 
@@ -22,15 +22,14 @@ void	client_main_loop(t_client *client)
 		if (select(client->sock + 1, client->read_fd_set,
 				client->write_fd_set, NULL, set_select_timeout(&t)) < 0)
 		{
-			printf(KRED "Select() Error.\n" KRESET);
-			perror("select");
+			printf(KRED "elect() Error.\n" KRESET);
 			exit(-1);
 		}
 		check_fd_sets(client);
 	}
 }
 
-void	init_fd(t_client *client)
+void				init_fd(t_client *client)
 {
 	FD_ZERO(client->read_fd_set);
 	FD_ZERO(client->write_fd_set);

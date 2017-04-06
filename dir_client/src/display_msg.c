@@ -27,7 +27,6 @@ void	display_public_msg(t_client *client, char *msg)
 	arg1_pos = len_to_next_proto_arg(msg) + 2;
 	arg2_pos = arg1_pos + len_to_next_proto_arg(msg + arg1_pos) + 2;
 	arg3_pos = arg2_pos + len_to_next_proto_arg(msg + arg2_pos) + 2;
-
 	printf("[%s%.*s%s] %s%.*s%s: %s\n", KCYN,
 		arg2_pos - arg1_pos - 2, msg + arg1_pos, KRESET, KYEL,
 		arg3_pos - arg2_pos - 2, msg + arg2_pos, KRESET,
@@ -42,9 +41,7 @@ void	display_private_msg(t_client *client, char *msg)
 	(void)client;
 	arg1_pos = len_to_next_proto_arg(msg) + 2;
 	arg2_pos = arg1_pos + len_to_next_proto_arg(msg + arg1_pos) + 2;
-	
-
-	printf("(%sWhisper%s %s>>>>%s %s%.*s%s): %s\n", KCYN, KRESET, KBLU, KRESET,
+	printf("(%sWhisper%s %s>>>>%s %s%.*s%s): %s\n", KCYN, KRESET, KGRN, KRESET,
 		KYEL, arg2_pos - arg1_pos - 2, msg + arg1_pos, KRESET,
 		msg + arg2_pos);
 }

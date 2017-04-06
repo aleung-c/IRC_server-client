@@ -50,7 +50,7 @@
 **	Communication defines
 */
 
-# define LISTEN_MAX_CLIENTS 10
+# define MAX_CLIENTS 100
 
 # define BUFFER_SIZE 4096
 # define MSG_SIZE 512
@@ -75,7 +75,7 @@
 # define MAX_NICK_LEN 9
 # define MAX_NICK_LEN_P1 10
 # define MAX_CHANNEL_NAME_LEN 50
-# define MAX_JOINABLE_CHAN 5
+# define MAX_CHANNELS 1
 
 /*
 **	Server structs.

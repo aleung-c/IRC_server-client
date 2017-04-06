@@ -77,8 +77,10 @@ void			init_client_vars(t_client *client);
 int				input_args_handling(t_client *client, int argc, char **argv);
 void			print_usage(char *arg);
 
-
 int				connect_client(t_client *client);
+int				try_client_connection(t_client *client);
+int				client_connect_exec(t_client *client, struct protoent *proto);
+
 int				get_hostname(t_client *client, char *arg);
 int				get_port(t_client *client, char *arg);
 
@@ -106,7 +108,8 @@ void			write_socket(t_client *client);
 */
 
 void			read_user_input(t_client *client);
-void			parse_user_connection_cmd(t_client *client, char *user_input_buffer);
+void			parse_user_connection_cmd(t_client *client,
+					char *user_input_buffer);
 void			user_input_error(char **lexed_msg, char *type, char *cmd);
 void			parse_user_auth_msg(t_client *client, char *user_input);
 void			parse_user_chat_msg(t_client *client, char *user_input);
@@ -117,6 +120,8 @@ void			parse_user_chat_msg(t_client *client, char *user_input);
 
 void			process_receiveid_msg(t_client *client);
 void			parse_auth_msg(t_client *client, char *msg);
+void			auth_msg_nick_failed(t_client *client);
+void			auth_msg_nick_success(t_client *client);
 void			parse_regular_msg(t_client *client, char *msg);
 
 /*
@@ -139,7 +144,8 @@ void			clear_circular_buffer(t_circular_buffer *buffer);
 char			*get_buffer_str(t_circular_buffer *buffer);
 
 char			*extract_buffer_str(t_circular_buffer *buffer);
-char			*get_buffer_delimstr(t_circular_buffer *buffer, int delim_count);
+char			*get_buffer_delimstr(t_circular_buffer *buffer,
+					int delim_count);
 int				search_buffer_delim(t_circular_buffer *buffer);
 char			*get_buffer_msg(t_circular_buffer *buffer);
 void			send_msg(t_client *client, char *msg);
@@ -156,7 +162,7 @@ void			print_sending(char *msg, int len);
 void			replace_nl(char *str, int len);
 int				get_len_to_delim(char *msg, char c);
 int				len_to_next_proto_arg(char *msg);
-void			put_prompt();
+void			put_prompt(void);
 
 char			**string_lexer(char *msg, char delim);
 int				str_word_count(char *msg, char delim);

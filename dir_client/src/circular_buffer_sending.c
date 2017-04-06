@@ -13,15 +13,15 @@
 #include "../includes/client.h"
 
 /*
-**	High level function: will fill the buffer with size check and stuff 
+**	High level function: will fill the buffer with size check and stuff
 **	to be sent at the next select loop turn.
 */
 
 void	send_msg(t_client *client, char *msg)
 {
-	if ((get_buffer_space(&client->write_buffer) - (int)strlen(msg)) >= 0)
+	if ((get_buffer_space(&client->write_buffer) - (int)ft_strlen(msg)) >= 0)
 	{
-		write_into_buffer(&client->write_buffer, msg, strlen(msg));
+		write_into_buffer(&client->write_buffer, msg, ft_strlen(msg));
 	}
 	else
 	{
@@ -32,6 +32,7 @@ void	send_msg(t_client *client, char *msg)
 /*
 **	Put the datas from the buffer into the static tmp buffer for sending.
 */
+
 int		extract_datas_to_send(t_circular_buffer *buffer, char *send_buffer)
 {
 	int		i;

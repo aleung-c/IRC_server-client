@@ -64,45 +64,7 @@ void	replace_nl(char *str, int len)
 	}
 }
 
-/*
-**	Get length until first delimiter c. Does not check boundaries!!
-**	Best used after most size checks.
-*/
-
-int		get_len_to_delim(char *msg, char c)
-{
-	int i;
-
-	i = 0;
-	while (msg[i] && msg[i] != c)
-	{
-		if (msg[i] == c)
-			return (i);
-		i++;
-	}
-	return (i);
-}
-
-/*
-**	Get length until first protocol delimter "::". Does not check boundaries!!
-**	Best used after most size checks.
-*/
-
-int		len_to_next_proto_arg(char *msg)
-{
-	int i;
-
-	i = 0;
-	while (msg[i] && msg[i] != ':')
-	{
-		if (msg[i] == ':' && msg[i + 1] && msg[i + 1] == ':')
-			return (i);
-		i++;
-	}
-	return (i);
-}
-
-void	put_prompt()
+void	put_prompt(void)
 {
 	write(1, "\n$> ", 4);
 }
