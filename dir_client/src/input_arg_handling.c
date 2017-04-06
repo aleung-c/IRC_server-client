@@ -65,14 +65,40 @@ int		get_port(t_client *client, char *arg)
 {
 	int		port_ret;
 
-	port_ret = ft_atoi(arg);
-	printf("port caught = %d\n", port_ret);
-	if (port_ret < 1024 || port_ret > 65535)
+	if (arg[ft_strlen(arg) - 1] == '\n')
+		arg[ft_strlen(arg) - 1] = '\0';
+	if (check_port_format(arg) != -1)
 	{
-		printf(KRED "Bad port: 1024 <> 65535\n" KRESET);
+		port_ret = ft_atoi(arg);
+		printf("port caught = %d\n", port_ret);
+		if (port_ret < 1024 || port_ret > 65535)
+		{
+			printf(KRED "Bad port: 1024 <> 65535\n" KRESET);
+			return (-1);
+		}
+		client->port = port_ret;
+		client->is_port_set = 1;
+	}
+	else
+	{
+		printf(KRED "Invalid port format\n" KRESET);
 		return (-1);
 	}
-	client->port = port_ret;
-	client->is_port_set = 1;
+	return (0);
+}
+
+int		check_port_format(char *arg)
+{
+	int i;
+
+	i = 0;
+	while (arg[i])
+	{
+		if (ft_isdigit(arg[i]) != 1)
+		{
+			return (-1);
+		}
+		i++;
+	}
 	return (0);
 }

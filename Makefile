@@ -6,6 +6,7 @@ HEADER_SERVEUR = dir_serveur/includes/serveur.h
 
 SRC_SERVEUR = \
 dir_serveur/src/serveur_main.c \
+dir_serveur/src/serveur_args.c \
 dir_serveur/src/tools.c \
 dir_serveur/src/tools_2.c \
 dir_serveur/src/tools_parsing.c \

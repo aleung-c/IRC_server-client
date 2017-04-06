@@ -29,11 +29,17 @@ void		cmd_amsg(t_serveur *serv, t_client *client, char *msg,
 			free_lexed_array(lexed_msg);
 		return ;
 	}
-	else
+	if (ft_strlen(msg + user_msg_start
+		+ ft_strlen(lexed_msg[0])) > TEXT_MSG_MAX_LEN)
 	{
-		cmd_amsg_try_exec(lexed_msg, client, msg, user_msg_start);
-		free_lexed_array(lexed_msg);
+		printf("[Server]: message too long for /amsg : [%s]\n",
+			msg + user_msg_start);
+		send_msg(client, "$ERRSERVMSG::message too long for /amsg"
+							"\n$PROMPT::\n");
+		return (free_lexed_array(lexed_msg));
 	}
+	cmd_amsg_try_exec(lexed_msg, client, msg, user_msg_start);
+	free_lexed_array(lexed_msg);
 }
 
 void		cmd_amsg_sending(t_client *client, char *msg)

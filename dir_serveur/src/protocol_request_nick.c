@@ -19,9 +19,7 @@ void	protocol_request_nick(t_serveur *serv, t_client *client, char *msg,
 
 	lexed_msg = string_lexer(msg + proto_msg_delim_pos, ' ');
 	if (proto_req_nick_parsing(lexed_msg, client, msg) == -1)
-	{
 		return ;
-	}
 	else
 	{
 		if (get_client_by_nick(serv, lexed_msg[0]))

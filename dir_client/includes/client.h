@@ -83,6 +83,7 @@ int				client_connect_exec(t_client *client, struct protoent *proto);
 
 int				get_hostname(t_client *client, char *arg);
 int				get_port(t_client *client, char *arg);
+int				check_port_format(char *arg);
 
 void			close_connection(t_client *client);
 

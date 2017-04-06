@@ -16,27 +16,15 @@ int		main(int argc, char **argv)
 {
 	t_serveur	serv;
 
-	if (argc == 2)
+	if ((get_args(&serv, argc, argv)) == 0
+		&& init_serveur(&serv) == 0)
 	{
-		serv.port = ft_atoi(argv[1]);
-		if (init_serveur(&serv) == 0)
-		{
-			serveur_main_loop(&serv);
-			return (0);
-		}
-		else
-		{
-			return (-1);
-		}
+		serveur_main_loop(&serv);
+		return (0);
 	}
 	else
 	{
-		print_usage(argv[0]);
+		return (-1);
 	}
 	return (0);
-}
-
-void	print_usage(char *arg)
-{
-	ft_printfstr(KRED "Usage: %s <port>\n" KRESET, arg);
 }

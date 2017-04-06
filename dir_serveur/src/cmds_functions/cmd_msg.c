@@ -12,34 +12,54 @@
 
 #include "../../includes/serveur.h"
 
+/*
+**	/msg <target> <hello message etc>
+*/
+
 void		cmd_msg(t_serveur *serv, t_client *client, char *msg,
 					int user_msg_start)
 {
 	char		**lexed_msg;
 
 	lexed_msg = string_lexer(msg + user_msg_start, ' ');
+	if (cmd_msg_parsing(lexed_msg, client, msg, user_msg_start) == -1)
+	{
+		if (lexed_msg)
+			free_lexed_array(lexed_msg);
+		return ;
+	}
+	cmd_msg_try_exec(serv, lexed_msg, client, msg + user_msg_start);
+	free_lexed_array(lexed_msg);
+}
+
+int			cmd_msg_parsing(char **lexed_msg, t_client *client, char *msg,
+					int user_msg_start)
+{
 	if (!lexed_msg || get_array_count(lexed_msg) < 3)
 	{
 		printf("[Server]: Missing argument for /msg : [%s]\n",
 			msg + user_msg_start);
 		send_msg(client, "$ERRSERVMSG::Missing argument for /msg\n$PROMPT::\n");
-		if (lexed_msg)
-			free_lexed_array(lexed_msg);
-		return ;
+		return (-1);
 	}
-	else
+	if (ft_strlen(lexed_msg[1]) > MAX_NICK_LEN)
 	{
-		if (ft_strlen(lexed_msg[1]) > MAX_NICK_LEN)
-		{
-			printf("[Server]: targeted nickname too long for /msg : [%s]\n",
-				msg + user_msg_start);
-			send_msg(client, "$ERRSERVMSG::targeted nickname too long"
-							" for /msg\n$PROMPT::\n");
-			return (free_lexed_array(lexed_msg));
-		}
-		cmd_msg_try_exec(serv, lexed_msg, client, msg + user_msg_start);
-		free_lexed_array(lexed_msg);
+		printf("[Server]: targeted nickname too long for /msg : [%s]\n",
+			msg + user_msg_start);
+		send_msg(client, "$ERRSERVMSG::targeted nickname too long"
+						" for /msg\n$PROMPT::\n");
+		return (-1);
 	}
+	if (ft_strlen(msg + user_msg_start
+		+ ft_strlen(lexed_msg[0])
+		+ ft_strlen(lexed_msg[1])) > TEXT_MSG_MAX_LEN)
+	{
+		printf("[Server]: message too long for /msg : [%s]\n",
+			msg + user_msg_start);
+		send_msg(client, "$ERRSERVMSG::message too long for /msg\n$PROMPT::\n");
+		return (-1);
+	}
+	return (0);
 }
 
 void		cmd_msg_try_exec(t_serveur *serv, char **lexed_msg,

@@ -17,10 +17,14 @@ void	cmd_nick(t_serveur *serv, t_client *client, char *msg,
 {
 	char **lexed_msg;
 
-	(void)serv;
 	lexed_msg = string_lexer(msg + user_msg_start, ' ');
 	if (cmd_nick_parse_args(lexed_msg, client, msg + user_msg_start) == -1)
+		return ;
+	if (get_client_by_nick(serv, lexed_msg[1]))
 	{
+		printf("[Server]: /nick command: nickname already taken: [%s]\n", msg);
+		send_msg(client, "$ERRSERVMSG::Nickname already taken.\n");
+		free_lexed_array(lexed_msg);
 		return ;
 	}
 	ft_memcpy(client->nickname, lexed_msg[1], MAX_NICK_LEN);

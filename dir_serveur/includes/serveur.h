@@ -94,6 +94,8 @@
 */
 
 int							main(int argc, char **argv);
+int							get_args(t_serveur *serv, int argc, char **argv);
+int							check_port_format(char *arg);
 void						print_usage(char *arg);
 
 /*
@@ -130,6 +132,7 @@ void						new_client_connection(t_serveur *serv);
 void						new_client_auth_request(t_client *client);
 void						new_client_auth_welcome(t_client *client);
 void						new_client_auth_welcome_2(t_client *client);
+
 /*
 ** client_handling.c
 */
@@ -286,6 +289,9 @@ void						cmd_amsg_try_exec(char **lexed_msg,
 								int user_msg_start);
 void						cmd_msg(t_serveur *serv, t_client *client,
 								char *msg, int user_msg_start);
+int							cmd_msg_parsing(char **lexed_msg,
+								t_client *client, char *msg,
+								int user_msg_start);
 void						cmd_msg_try_exec(t_serveur *serv, char **lexed_msg,
 								t_client *client, char *msg);
 void						cmd_msg_sending(char **lexed_msg, t_client *client,
