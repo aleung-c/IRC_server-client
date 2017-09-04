@@ -31,7 +31,7 @@ $PROTOREQ::ASK::NICK::----- $NICK::aleung-c
 ```
 
 This makes a simple multi-client friendly chat program. Here are some output examples.
-On the right, you can see the server's running output, and the three windows on the right are clients communicating:
+On the left, you can see the server's running output, and the three windows on the right are clients communicating:
 
 
 Connecting to the server:
